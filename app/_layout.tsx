@@ -21,17 +21,17 @@ export default function RootLayout() {
       <AuthProvider>
         <Stack>
           <Stack.Screen
-            name="(tabs)"
+            name="(authorized)"
             options={{
               title: "Authorized",
               headerShown: true,
             }}
           />
           <Stack.Screen
-            name="(unauthorized)/index"
+            name="(unauthorized)"
             options={{
               title: "Unauthorized",
-              headerShown: true,
+              headerShown: false,
             }}
           />
         </Stack>

@@ -15,13 +15,13 @@ function useProtectedRoute(user: any) {
   const router = useRouter();
 
   useEffect(() => {
-    const inAuthGroup = segments[0] === "unauthorized";
-    console.log("inAuthGroup", inAuthGroup);
+    const isUnauthorized = segments[0] === "unauthorized";
+    console.log("isUnauthorized", isUnauthorized);
     console.log("segments", segments);
-    if (!user && !inAuthGroup) {
+    if (!user && !isUnauthorized) {
       // Redirect to the sign-in page.
       router.replace("/");
-    } else if (user && inAuthGroup) {
+    } else if (user && isUnauthorized) {
       // Redirect away from the sign-in page.
       router.replace("/home");
     }
