@@ -10,20 +10,17 @@ const AuthContext = createContext<ContextState>({
 
 export const useAuth = () => useContext(AuthContext);
 
-function useProtectedRoute(user: any) {
+export function useProtectedRoute(user: any) {
   const segments = useSegments();
   const router = useRouter();
 
   useEffect(() => {
-    const isUnauthorized = segments[0] === "unauthorized";
-    console.log("isUnauthorized", isUnauthorized);
+    const isInUnauthorizedRoute = segments[0] === "unauthorized";
+    console.log("isInUnauthorizedRoute", isInUnauthorizedRoute);
     console.log("segments", segments);
-    if (!user && !isUnauthorized) {
+    if (!user && !isInUnauthorizedRoute) {
       // Redirect to the sign-in page.
       router.replace("/");
-    } else if (user && isUnauthorized) {
-      // Redirect away from the sign-in page.
-      router.replace("/home");
     }
   }, [user, segments]);
 }
@@ -52,8 +49,6 @@ export function AuthProvider({
 
     return unsubscribeFromAuthStatusChanged;
   }, []);
-
-  useProtectedRoute(user);
 
   return (
     <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>

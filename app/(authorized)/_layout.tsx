@@ -1,6 +1,11 @@
 import { Tabs } from "expo-router";
 
+import { useAuth, useProtectedRoute } from "../../src/context/AuthProvider";
+
 export default function AuthorizedLayout() {
+  const { user } = useAuth();
+  useProtectedRoute(user);
+
   return (
     <>
       <Tabs>
