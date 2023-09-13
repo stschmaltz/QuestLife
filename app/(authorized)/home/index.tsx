@@ -1,6 +1,5 @@
 import "../../../firebase.config";
 import { Link } from "expo-router";
-import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 
@@ -12,7 +11,7 @@ export default function Home() {
   return (
     <View style={[styles.container, { backgroundColor: "green" }]}>
       <Text>
-        {user ? "User is signed in as ${user?.email}" : "User is not signed in"}
+        {user ? `User is signed in as ${user?.email}` : "User is not signed in"}
       </Text>
     </View>
   );

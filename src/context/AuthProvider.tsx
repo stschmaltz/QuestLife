@@ -1,6 +1,8 @@
 import { useSegments, useRouter } from "expo-router";
-import { getAuth, onAuthStateChanged, User } from "firebase/auth";
+import { onAuthStateChanged, User } from "firebase/auth";
 import { createContext, useContext, useEffect, useState } from "react";
+
+import { auth } from "../../firebase.config";
 
 type ContextState = { user: User | null | undefined };
 
@@ -10,14 +12,27 @@ const AuthContext = createContext<ContextState>({
 
 export const useAuth = () => useContext(AuthContext);
 
+export function useUnauthorizedRoute(user: any) {
+  const segments = useSegments();
+  const router = useRouter();
+
+  useEffect(() => {
+    console.log("useUnauthorizedRoute", { user, segments });
+    const isInUnauthorizedRoute = segments[0] === "(unauthorized)";
+    if (user && isInUnauthorizedRoute) {
+      // Redirect to the sign-in page.
+      router.replace("/home");
+    }
+  }, [user, segments]);
+}
+
 export function useProtectedRoute(user: any) {
   const segments = useSegments();
   const router = useRouter();
 
   useEffect(() => {
-    const isInUnauthorizedRoute = segments[0] === "unauthorized";
-    console.log("isInUnauthorizedRoute", isInUnauthorizedRoute);
-    console.log("segments", segments);
+    console.log("useProtectedRoute", { user, segments });
+    const isInUnauthorizedRoute = segments[0] === "(unauthorized)";
     if (!user && !isInUnauthorizedRoute) {
       // Redirect to the sign-in page.
       router.replace("/");
@@ -31,12 +46,13 @@ export function AuthProvider({
   children: JSX.Element;
 }): JSX.Element {
   const [user, setUser] = useState<User | null>();
-  const auth = getAuth();
 
   useEffect(() => {
+    console.log("AuthProvider", { onAuthStateChanged: true, user });
     const unsubscribeFromAuthStatusChanged = onAuthStateChanged(
       auth,
       (user) => {
+        console.log("lets go", { user });
         if (user) {
           // User is signed in
           setUser(user);

@@ -1,4 +1,5 @@
 import { Stack } from "expo-router";
+import { getAuth } from "firebase/auth";
 import { Provider, MD3LightTheme as DefaultTheme } from "react-native-paper";
 
 import { AuthProvider } from "../src/context/AuthProvider";
@@ -8,9 +9,9 @@ export default function RootLayout() {
     ...DefaultTheme,
     // Specify custom property
     custom: true,
-    ...DefaultTheme.colors,
     // Specify custom property in nested object
     colors: {
+      ...DefaultTheme.colors,
       custom: "blue",
       background: "#eeeeee",
     },
