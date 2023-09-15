@@ -31,9 +31,8 @@ export function useAuthenticationRouting(user: any) {
       // Redirect authenticated users away from unauthorized routes (like the login page)
       router.push("/home");
     } else if (!user && !isInUnauthorizedRoute) {
-      console.log("else if");
       // Redirect unauthenticated users to the login page if they're not already there
-      router.push("/");
+      router.replace("/");
     }
   }, [user, segments]);
 }
