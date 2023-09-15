@@ -17,8 +17,13 @@ export function useUnauthorizedRoute(user: any) {
   const router = useRouter();
 
   useEffect(() => {
-    console.log("useUnauthorizedRoute", { user, segments });
     const isInUnauthorizedRoute = segments[0] === "(unauthorized)";
+    console.log("useUnauthorizedRoute", {
+      user,
+      segments,
+      bool: user && isInUnauthorizedRoute,
+    });
+
     if (user && isInUnauthorizedRoute) {
       // Redirect to the sign-in page.
       router.replace("/home");
@@ -60,7 +65,7 @@ export function AuthProvider({
           // User is signed out
           setUser(null);
         }
-      }
+      },
     );
 
     return unsubscribeFromAuthStatusChanged;

@@ -1,8 +1,9 @@
 import { FirebaseError } from "firebase/app";
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
-import { Button, TextInput } from "react-native-paper";
+import { Button, TextInput, HelperText } from "react-native-paper";
+
+import { signUpWithEmail } from "../../../src/services/auth/auth";
 
 export default function SignUpForm() {
   const [email, setEmail] = useState("");
@@ -10,25 +11,20 @@ export default function SignUpForm() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
 
-  const auth = getAuth();
-
   const handleSignUp = async () => {
-    // Handle sign up logic here
+    setError(null);
+
     if (password !== confirmPassword) {
-      alert("Passwords don't match");
+      setError("Passwords don't match");
       return;
     }
-    // Else, continue with the sign-up process
-    console.log("Signing up with:", email, password);
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      // Optionally, you could navigate the user to a welcome or home screen here.
-    } catch (e: unknown | FirebaseError) {
+      await signUpWithEmail({ email, password });
+    } catch (e: unknown) {
       console.error("Signup error:", e);
       if (e instanceof FirebaseError) {
         setError(e.message);
-        alert(e.message);
       }
     }
   };
@@ -41,6 +37,7 @@ export default function SignUpForm() {
         onChangeText={setEmail}
         mode="outlined"
         style={styles.input}
+        autoCapitalize="none"
       />
       <TextInput
         label="Password"
@@ -49,6 +46,7 @@ export default function SignUpForm() {
         mode="outlined"
         secureTextEntry
         style={styles.input}
+        autoCapitalize="none"
       />
       <TextInput
         label="Confirm Password"
@@ -57,7 +55,11 @@ export default function SignUpForm() {
         mode="outlined"
         secureTextEntry
         style={styles.input}
+        autoCapitalize="none"
       />
+      <HelperText type="error" visible={!!error}>
+        {error}
+      </HelperText>
       <Button
         mode="contained"
         onPress={handleSignUp}

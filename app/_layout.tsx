@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
-import { getAuth } from "firebase/auth";
 import { Provider, MD3LightTheme as DefaultTheme } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import { AuthProvider } from "../src/context/AuthProvider";
 
@@ -25,7 +25,7 @@ export default function RootLayout() {
             name="(authorized)"
             options={{
               title: "Authorized",
-              headerShown: true,
+              headerShown: false,
             }}
           />
           <Stack.Screen

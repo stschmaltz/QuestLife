@@ -4,22 +4,12 @@ import { useAuth, useUnauthorizedRoute } from "../../src/context/AuthProvider";
 
 export default function UnauthorizedLayout() {
   const { user } = useAuth();
-
+  console.log("UnauthorizedLayout", { user });
   useUnauthorizedRoute(user);
 
   return (
     <>
-      <Stack
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: "red",
-          },
-          headerTintColor: "white",
-          headerTitleStyle: {
-            fontWeight: "bold",
-          },
-        }}
-      >
+      <Stack>
         <Stack.Screen
           name="index"
           options={{
