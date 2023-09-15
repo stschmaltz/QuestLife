@@ -7,8 +7,8 @@ import {
   signOut,
 } from "firebase/auth";
 
-import { mapFirebaseError } from "../../utils/firebaseAuthErrors";
 import { UserObject } from "../../types/user";
+import { mapFirebaseError } from "../../utils/firebaseErrors";
 import { saveUser } from "../firestore/user";
 
 const auth = getAuth();

@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 import { auth } from "../../firebase.config";
 
-type ContextState = { user: User | null | undefined };
+type ContextState = { user: User | null | undefined | "loading" };
 
 const AuthContext = createContext<ContextState>({
   user: null,
@@ -12,35 +12,28 @@ const AuthContext = createContext<ContextState>({
 
 export const useAuth = () => useContext(AuthContext);
 
-export function useUnauthorizedRoute(user: any) {
+export function useAuthenticationRouting(user: any) {
   const segments = useSegments();
   const router = useRouter();
 
   useEffect(() => {
+    if (user === "loading") return;
+    console.log("useAuthenticationRouting", { user, segments });
+
     const isInUnauthorizedRoute = segments[0] === "(unauthorized)";
-    console.log("useUnauthorizedRoute", {
+
+    console.log({
+      isInUnauthorizedRoute,
       user,
-      segments,
-      bool: user && isInUnauthorizedRoute,
+      bool: !!user && isInUnauthorizedRoute,
     });
-
-    if (user && isInUnauthorizedRoute) {
-      // Redirect to the sign-in page.
-      router.replace("/home");
-    }
-  }, [user, segments]);
-}
-
-export function useProtectedRoute(user: any) {
-  const segments = useSegments();
-  const router = useRouter();
-
-  useEffect(() => {
-    console.log("useProtectedRoute", { user, segments });
-    const isInUnauthorizedRoute = segments[0] === "(unauthorized)";
-    if (!user && !isInUnauthorizedRoute) {
-      // Redirect to the sign-in page.
-      router.replace("/");
+    if (!!user && isInUnauthorizedRoute) {
+      // Redirect authenticated users away from unauthorized routes (like the login page)
+      router.push("/home");
+    } else if (!user && !isInUnauthorizedRoute) {
+      console.log("else if");
+      // Redirect unauthenticated users to the login page if they're not already there
+      router.push("/");
     }
   }, [user, segments]);
 }
@@ -50,7 +43,7 @@ export function AuthProvider({
 }: {
   children: JSX.Element;
 }): JSX.Element {
-  const [user, setUser] = useState<User | null>();
+  const [user, setUser] = useState<User | null | "loading">("loading");
 
   useEffect(() => {
     console.log("AuthProvider", { onAuthStateChanged: true, user });

@@ -7,6 +7,10 @@ import { useAuth } from "../../../src/context/AuthProvider";
 export default function Home() {
   const { user } = useAuth();
 
+  if (!user || user === "loading") {
+    return null;
+  }
+
   return (
     <View style={[styles.container, { backgroundColor: "green" }]}>
       <Text>
