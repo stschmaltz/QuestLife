@@ -1,6 +1,5 @@
 import { Stack } from "expo-router";
 import { Provider, MD3LightTheme as DefaultTheme } from "react-native-paper";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 import { AuthProvider } from "../src/context/AuthProvider";
 

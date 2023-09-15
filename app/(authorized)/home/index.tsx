@@ -1,5 +1,4 @@
 import "../../../firebase.config";
-import { Link } from "expo-router";
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 

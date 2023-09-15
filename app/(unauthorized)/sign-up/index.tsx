@@ -1,8 +1,9 @@
 import { FirebaseError } from "firebase/app";
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
-import { Button, TextInput, HelperText } from "react-native-paper";
+import { Button, HelperText } from "react-native-paper";
 
+import AuthInput from "../../../src/components/AuthInput";
 import { signUpWithEmail } from "../../../src/services/auth/auth";
 
 export default function SignUpForm() {
@@ -31,32 +32,20 @@ export default function SignUpForm() {
 
   return (
     <View style={styles.container}>
-      <TextInput
-        label="Email"
-        value={email}
-        onChangeText={setEmail}
-        mode="outlined"
-        style={styles.input}
-        autoCapitalize="none"
-      />
-      <TextInput
+      <AuthInput label="Email" value={email} onChangeText={setEmail} />
+      <AuthInput
         label="Password"
         value={password}
         onChangeText={setPassword}
-        mode="outlined"
-        secureTextEntry
-        style={styles.input}
-        autoCapitalize="none"
+        secureText
       />
-      <TextInput
+      <AuthInput
         label="Confirm Password"
         value={confirmPassword}
         onChangeText={setConfirmPassword}
-        mode="outlined"
-        secureTextEntry
-        style={styles.input}
-        autoCapitalize="none"
+        secureText
       />
+
       <HelperText type="error" visible={!!error}>
         {error}
       </HelperText>
@@ -76,8 +65,5 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     justifyContent: "center",
-  },
-  input: {
-    marginBottom: 10,
   },
 });
