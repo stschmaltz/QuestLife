@@ -1,4 +1,5 @@
 import { Tabs } from "expo-router";
+import React from "react";
 import { View } from "react-native";
 
 import LogoutButton from "../../src/components/LogoutButton";

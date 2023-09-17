@@ -1,11 +1,15 @@
-import "../../../firebase.config";
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
+import { Button } from "react-native-paper";
 
 import { useAuth } from "../../../src/context/AuthProvider";
+import { sendPrompt } from "../../../src/services/openai/gpt";
 
 export default function Home() {
   const { user } = useAuth();
+
+  const [isLoadingPrompt, setIsLoadingPrompt] = React.useState(false);
+  const [prompt, setPrompt] = React.useState([]);
 
   if (!user || user === "loading") {
     return null;
@@ -16,6 +20,20 @@ export default function Home() {
       <Text>
         {user ? `User is signed in as ${user?.email}` : "User is not signed in"}
       </Text>
+      <Button
+        onPress={async () => {
+          setIsLoadingPrompt(true);
+          const responses = await sendPrompt();
+          setPrompt(responses);
+          setIsLoadingPrompt(false);
+        }}
+      >
+        Send Prompt
+      </Button>
+      {prompt.map((p) => (
+        <Text key={p}>{p}</Text>
+      ))}
+      {isLoadingPrompt && <Text>Loading prompt...</Text>}
     </View>
   );
 }

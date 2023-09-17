@@ -1,4 +1,5 @@
 import { Stack } from "expo-router";
+import React from "react";
 import { Provider, MD3LightTheme as DefaultTheme } from "react-native-paper";
 
 import { AuthProvider } from "../src/context/AuthProvider";
