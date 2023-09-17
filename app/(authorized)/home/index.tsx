@@ -3,13 +3,14 @@ import { StyleSheet, View, Text } from "react-native";
 import { Button } from "react-native-paper";
 
 import { useAuth } from "../../../src/context/AuthProvider";
-import { sendPrompt } from "../../../src/services/openai/gpt";
+import { useOpenAI } from "../../../src/context/OpenAIProvider";
 
 export default function Home() {
   const { user } = useAuth();
 
   const [isLoadingPrompt, setIsLoadingPrompt] = React.useState(false);
-  const [prompt, setPrompt] = React.useState([]);
+  const [prompt, setPrompt] = React.useState<string[]>([]);
+  const openai = useOpenAI();
 
   if (!user || user === "loading") {
     return null;
@@ -23,7 +24,8 @@ export default function Home() {
       <Button
         onPress={async () => {
           setIsLoadingPrompt(true);
-          const responses = await sendPrompt();
+          setPrompt([]);
+          const responses = openai ? await openai?.sendPrompt() : [];
           setPrompt(responses);
           setIsLoadingPrompt(false);
         }}

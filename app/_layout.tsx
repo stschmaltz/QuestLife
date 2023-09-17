@@ -3,6 +3,9 @@ import React from "react";
 import { Provider, MD3LightTheme as DefaultTheme } from "react-native-paper";
 
 import { AuthProvider } from "../src/context/AuthProvider";
+import { OpenAIApiProvider } from "../src/context/OpenAIProvider";
+import { OpenAIApi } from "../src/services/openai/gpt";
+const openaiInstance = new OpenAIApi();
 
 export default function RootLayout() {
   const theme = {
@@ -20,22 +23,24 @@ export default function RootLayout() {
   return (
     <Provider theme={theme}>
       <AuthProvider>
-        <Stack>
-          <Stack.Screen
-            name="(authorized)"
-            options={{
-              title: "Authorized",
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="(unauthorized)"
-            options={{
-              title: "Unauthorized",
-              headerShown: false,
-            }}
-          />
-        </Stack>
+        <OpenAIApiProvider openAIApi={openaiInstance}>
+          <Stack>
+            <Stack.Screen
+              name="(authorized)"
+              options={{
+                title: "Authorized",
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="(unauthorized)"
+              options={{
+                title: "Unauthorized",
+                headerShown: false,
+              }}
+            />
+          </Stack>
+        </OpenAIApiProvider>
       </AuthProvider>
     </Provider>
   );
