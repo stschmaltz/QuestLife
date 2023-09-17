@@ -12,9 +12,32 @@ const AuthContext = createContext<ContextState>({
 
 export const useAuth = () => useContext(AuthContext);
 
-export function useAuthenticationRouting(user: any) {
+export function AuthProvider({
+  children,
+}: {
+  children: JSX.Element;
+}): JSX.Element {
+  const [user, setUser] = useState<User | null | "loading">("loading");
   const segments = useSegments();
   const router = useRouter();
+  useEffect(() => {
+    console.log("AuthProvider", { onAuthStateChanged: true, user });
+    const unsubscribeFromAuthStatusChanged = onAuthStateChanged(
+      auth,
+      (user) => {
+        console.log("lets go", { user });
+        if (user) {
+          // User is signed in
+          setUser(user);
+        } else {
+          // User is signed out
+          setUser(null);
+        }
+      },
+    );
+
+    return unsubscribeFromAuthStatusChanged;
+  }, []);
 
   useEffect(() => {
     if (user === "loading") return;
@@ -35,33 +58,6 @@ export function useAuthenticationRouting(user: any) {
       router.replace("/");
     }
   }, [user, segments]);
-}
-
-export function AuthProvider({
-  children,
-}: {
-  children: JSX.Element;
-}): JSX.Element {
-  const [user, setUser] = useState<User | null | "loading">("loading");
-
-  useEffect(() => {
-    console.log("AuthProvider", { onAuthStateChanged: true, user });
-    const unsubscribeFromAuthStatusChanged = onAuthStateChanged(
-      auth,
-      (user) => {
-        console.log("lets go", { user });
-        if (user) {
-          // User is signed in
-          setUser(user);
-        } else {
-          // User is signed out
-          setUser(null);
-        }
-      },
-    );
-
-    return unsubscribeFromAuthStatusChanged;
-  }, []);
 
   return (
     <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>

@@ -1,14 +1,6 @@
 import { Stack } from "expo-router";
 
-import {
-  useAuth,
-  useAuthenticationRouting,
-} from "../../src/context/AuthProvider";
-
 export default function UnauthorizedLayout() {
-  const { user } = useAuth();
-  useAuthenticationRouting(user);
-
   return (
     <>
       <Stack>
