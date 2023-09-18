@@ -16,10 +16,14 @@ class OpenAIApi {
   private instance: AxiosInstance;
   private model: string;
   private messages: IMessage[];
+  private temperature: number;
+  private top_p: number;
+  private endpoint: string;
+  private baseUrl: string = "https://api.openai.com/";
 
   constructor() {
     this.instance = axios.create({
-      baseURL: "https://api.openai.com/",
+      baseURL: this.baseUrl,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${process.env.OPENAI_KEY}`,
@@ -27,17 +31,28 @@ class OpenAIApi {
     });
 
     // Default values. This can be adjusted based on the desired behavior.
+    this.top_p = 0.7;
+    this.temperature = 0.8;
     this.model = "gpt-4";
+    this.endpoint = "v1/chat/completions";
     this.messages = [
       {
         role: "system",
         content:
-          "You are a helpful assistant. You give users unique adventures based on their inputs. Your goal is to make the adventure fun, unique but doable. You are to give 10 unique adventures but they should be something that can be completed within a specified timeline.",
+          "You're a challenge generator for QuestLife, an app that provides users with personalized challenges based on their preferences, goals, budget, and limitations. Your task is to come up with 10 engaging, suitable, and realistic challenges tailored to each user's inputs. Please structure each challenge response in JSON format with fields 'challengeTitle', 'challengeDescription', and 'suggestedDuration'.",
       },
+      { role: "user", content: "I want daily challenges." },
+      { role: "user", content: "I'll be taking the challenges solo." },
+      { role: "user", content: "My main goal is personal growth." },
       {
         role: "user",
-        content:
-          "Hello! I want adventures for me and my partner. They should be very cute and romantic ideas. We don't want to spend money. We are trying to add more fun to our lives. We like food, music, and board games. I'm looking for 3 hour or less adventures that can be done on weekends.",
+        content: "My interests are food, exercise, sports, and video games.",
+      },
+      { role: "user", content: "I have a low budget for these challenges." },
+      { role: "user", content: "No specific limitations." },
+      {
+        role: "user",
+        content: "My ideal duration for each challenge is 30 minutes.",
       },
     ];
   }
@@ -45,10 +60,12 @@ class OpenAIApi {
   async sendPrompt(): Promise<string[]> {
     try {
       const response = await this.instance.post<IOpenAIResponse>(
-        "v1/chat/completions",
+        this.endpoint,
         {
           model: this.model,
           messages: this.messages,
+          temperature: this.temperature,
+          top_p: this.top_p,
         },
       );
       return response.data.choices.map((choice) => choice.message.content);

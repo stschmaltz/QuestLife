@@ -19,6 +19,11 @@ export default function AuthorizedLayout() {
           }}
         />
         <Tabs.Screen name="account/index" options={{ title: "Account" }} />
+        <Tabs.Screen name="prompt/index" options={{ title: "Prompt" }} />
+        <Tabs.Screen
+          name="new-challenge/index"
+          options={{ title: "New Challenge!", href: null }}
+        />
       </Tabs>
     </View>
   );
