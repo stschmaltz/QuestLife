@@ -1,9 +1,10 @@
 import { FirebaseError } from "firebase/app";
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
-import { Button, HelperText } from "react-native-paper";
+import { HelperText } from "react-native-paper";
 
-import AuthInput from "../../../src/components/AuthInput";
+import AuthInput from "../../../src/components/auth/AuthInput";
+import ThemedButton from "../../../src/components/themed/ThemedButton";
 import { signInWithEmail } from "../../../src/services/auth/auth";
 
 export default function LoginForm() {
@@ -36,13 +37,13 @@ export default function LoginForm() {
       <HelperText type="error" visible={!!error}>
         {error}
       </HelperText>
-      <Button
+      <ThemedButton
         mode="contained"
         onPress={handleLogin}
         disabled={!email || !password}
       >
         Login
-      </Button>
+      </ThemedButton>
     </View>
   );
 }

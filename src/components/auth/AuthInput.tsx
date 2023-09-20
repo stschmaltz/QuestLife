@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import { TextInput } from "react-native-paper";
 
+import ThemedTextInput from "../themed/ThemedTextInput";
+
 interface AuthInputProps {
   label: string;
   value: string;
@@ -18,7 +20,7 @@ export default function AuthInput({
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   return (
-    <TextInput
+    <ThemedTextInput
       label={label}
       value={value}
       onChangeText={onChangeText}

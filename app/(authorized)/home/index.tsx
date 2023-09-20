@@ -1,8 +1,8 @@
 import { useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
-import { Button } from "react-native-paper";
 
+import ThemedButton from "../../../src/components/themed/ThemedButton";
 import { useAuth } from "../../../src/context/AuthProvider";
 
 export default function Home() {
@@ -23,14 +23,12 @@ export default function Home() {
         </Text>
       </View>
       <View style={{ height: 400, justifyContent: "center" }}>
-        <Button
-          buttonColor="#FF6978"
-          textColor="#FFFCF9"
+        <ThemedButton
           mode="contained"
           onPress={() => router.push("/new-challenge")}
         >
           Start a challenge!
-        </Button>
+        </ThemedButton>
       </View>
     </View>
   );

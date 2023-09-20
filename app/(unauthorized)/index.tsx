@@ -1,23 +1,25 @@
 import { router } from "expo-router";
 import React from "react";
 import { View } from "react-native";
-import { Button } from "react-native-paper";
+
+import ContainerView from "../../src/components/ContainerView";
+import ThemedButton from "../../src/components/themed/ThemedButton";
 
 export default function UnauthorizedHome() {
   return (
     <>
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Button mode="contained" onPress={() => router.push("/login")}>
+      <ContainerView style={{ alignItems: "center", justifyContent: "center" }}>
+        <ThemedButton mode="contained" onPress={() => router.push("/login")}>
           Login
-        </Button>
-        <Button
+        </ThemedButton>
+        <ThemedButton
           style={{ marginTop: 10 }}
           mode="contained"
           onPress={() => router.push("/sign-up")}
         >
           Sign Up
-        </Button>
-      </View>
+        </ThemedButton>
+      </ContainerView>
     </>
   );
 }

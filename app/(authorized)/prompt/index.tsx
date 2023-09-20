@@ -1,7 +1,8 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
-import { Button } from "react-native-paper";
 
+import ContainerView from "../../../src/components/ContainerView";
+import ThemedButton from "../../../src/components/themed/ThemedButton";
 import { useAuth } from "../../../src/context/AuthProvider";
 import { useOpenAI } from "../../../src/context/OpenAIProvider";
 
@@ -17,8 +18,8 @@ export default function Home() {
   }
 
   return (
-    <View style={[styles.container]}>
-      <Button
+    <ContainerView style={[styles.container]}>
+      <ThemedButton
         mode="contained"
         onPress={async () => {
           setIsLoadingPrompt(true);
@@ -29,18 +30,17 @@ export default function Home() {
         }}
       >
         Send Prompt
-      </Button>
+      </ThemedButton>
       {prompt.map((p) => (
         <Text key={p}>{p}</Text>
       ))}
       {isLoadingPrompt && <Text>Loading prompt...</Text>}
-    </View>
+    </ContainerView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     paddingTop: 20,
     alignItems: "center",
     justifyContent: "center",

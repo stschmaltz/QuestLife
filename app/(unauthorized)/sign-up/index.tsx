@@ -1,9 +1,11 @@
 import { FirebaseError } from "firebase/app";
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
-import { Button, HelperText } from "react-native-paper";
+import { HelperText } from "react-native-paper";
 
-import AuthInput from "../../../src/components/AuthInput";
+import ContainerView from "../../../src/components/ContainerView";
+import AuthInput from "../../../src/components/auth/AuthInput";
+import ThemedButton from "../../../src/components/themed/ThemedButton";
 import { signUpWithEmail } from "../../../src/services/auth/auth";
 
 export default function SignUpForm() {
@@ -31,7 +33,7 @@ export default function SignUpForm() {
   };
 
   return (
-    <View style={styles.container}>
+    <ContainerView style={styles.container}>
       <AuthInput label="Email" value={email} onChangeText={setEmail} />
       <AuthInput
         label="Password"
@@ -49,21 +51,19 @@ export default function SignUpForm() {
       <HelperText type="error" visible={!!error}>
         {error}
       </HelperText>
-      <Button
+      <ThemedButton
         mode="contained"
         onPress={handleSignUp}
         disabled={!email || !password || !confirmPassword}
       >
         Sign Up
-      </Button>
-    </View>
+      </ThemedButton>
+    </ContainerView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     padding: 16,
-    justifyContent: "center",
   },
 });

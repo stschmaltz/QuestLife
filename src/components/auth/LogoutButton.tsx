@@ -1,8 +1,8 @@
 import React from "react";
-import { Button } from "react-native-paper";
 
-import { useAuth } from "../../src/context/AuthProvider";
-import { logout } from "../services/auth/auth";
+import { useAuth } from "../../context/AuthProvider";
+import { logout } from "../../services/auth/auth";
+import ThemedButton from "../themed/ThemedButton";
 
 export default function LogoutButton() {
   const { user } = useAuth();
@@ -20,5 +20,5 @@ export default function LogoutButton() {
     return null;
   }
 
-  return <Button onPress={handleLogout}>Logout</Button>;
+  return <ThemedButton onPress={handleLogout}>Logout</ThemedButton>;
 }
