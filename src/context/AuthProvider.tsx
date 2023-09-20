@@ -21,11 +21,9 @@ export function AuthProvider({
   const segments = useSegments();
   const router = useRouter();
   useEffect(() => {
-    console.log("AuthProvider", { onAuthStateChanged: true, user });
     const unsubscribeFromAuthStatusChanged = onAuthStateChanged(
       auth,
       (user) => {
-        console.log("lets go", { user });
         if (user) {
           // User is signed in
           setUser(user);
@@ -41,15 +39,9 @@ export function AuthProvider({
 
   useEffect(() => {
     if (user === "loading") return;
-    console.log("useAuthenticationRouting", { user, segments });
 
     const isInUnauthorizedRoute = segments[0] === "(unauthorized)";
 
-    console.log({
-      isInUnauthorizedRoute,
-      user,
-      bool: !!user && isInUnauthorizedRoute,
-    });
     if (!!user && isInUnauthorizedRoute) {
       // Redirect authenticated users away from unauthorized routes (like the login page)
       router.push("/home");
