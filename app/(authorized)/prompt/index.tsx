@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, Text } from "react-native";
 
 import ContainerView from "../../../src/components/ContainerView";
 import ThemedButton from "../../../src/components/themed/ThemedButton";

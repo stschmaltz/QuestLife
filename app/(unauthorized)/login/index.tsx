@@ -1,8 +1,9 @@
 import { FirebaseError } from "firebase/app";
 import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { HelperText } from "react-native-paper";
 
+import ContainerView from "../../../src/components/ContainerView";
 import AuthInput from "../../../src/components/auth/AuthInput";
 import ThemedButton from "../../../src/components/themed/ThemedButton";
 import { signInWithEmail } from "../../../src/services/auth/auth";
@@ -26,7 +27,7 @@ export default function LoginForm() {
   };
 
   return (
-    <View style={styles.container}>
+    <ContainerView style={styles.container}>
       <AuthInput label="Email" value={email} onChangeText={setEmail} />
       <AuthInput
         label="Password"
@@ -44,13 +45,12 @@ export default function LoginForm() {
       >
         Login
       </ThemedButton>
-    </View>
+    </ContainerView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     padding: 16,
     justifyContent: "center",
   },

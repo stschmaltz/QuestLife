@@ -8,7 +8,6 @@ const ContainerView: React.FC<ViewProps> = ({ style, ...restProps }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
     justifyContent: "center",
   },
 });

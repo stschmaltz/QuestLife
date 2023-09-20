@@ -1,6 +1,6 @@
 import { FirebaseError } from "firebase/app";
 import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { HelperText } from "react-native-paper";
 
 import ContainerView from "../../../src/components/ContainerView";
@@ -65,5 +65,6 @@ export default function SignUpForm() {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
+    justifyContent: "center",
   },
 });

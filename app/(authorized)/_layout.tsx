@@ -2,7 +2,6 @@ import { Tabs } from "expo-router";
 import React from "react";
 import { View } from "react-native";
 
-import ContainerView from "../../src/components/ContainerView";
 import LogoutButton from "../../src/components/auth/LogoutButton";
 
 export default function AuthorizedLayout() {
