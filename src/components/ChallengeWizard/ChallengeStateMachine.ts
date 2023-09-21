@@ -5,9 +5,17 @@ type ChallengeEvent =
   | { type: "CHOOSE_TYPE"; value: string }
   | { type: "CHOOSE_BUDGET"; value: string }
   | { type: "TOGGLE_INTEREST"; interest: string }
+  | { type: "BACK" }
   | { type: "DONE_SELECTING_INTERESTS" }
   | { type: "CONFIRM" }
   | { type: "MODIFY" };
+
+export interface Context {
+  interests: string[];
+  frequency: string;
+  type: string;
+  budget: string;
+}
 
 const challengeStateMachine = createMachine<any, ChallengeEvent>(
   {
@@ -16,6 +24,9 @@ const challengeStateMachine = createMachine<any, ChallengeEvent>(
     initial: "selectFrequency",
     context: {
       interests: [],
+      frequency: "",
+      type: "",
+      budget: "",
     },
     states: {
       selectFrequency: {
@@ -30,7 +41,13 @@ const challengeStateMachine = createMachine<any, ChallengeEvent>(
       },
       selectType: {
         on: {
-          CHOOSE_TYPE: "selectInterests",
+          CHOOSE_TYPE: {
+            target: "selectInterests",
+            actions: assign({
+              type: (_context, event) => event.value,
+            }),
+          },
+          BACK: "selectFrequency",
         },
       },
       selectInterests: {
@@ -39,17 +56,25 @@ const challengeStateMachine = createMachine<any, ChallengeEvent>(
             actions: "toggleInterest",
           },
           DONE_SELECTING_INTERESTS: "selectBudget",
+          BACK: "selectType",
         },
       },
       selectBudget: {
         on: {
-          CHOOSE_BUDGET: "summary",
+          CHOOSE_BUDGET: {
+            target: "summary",
+            actions: assign({
+              budget: (_context, event) => event.value,
+            }),
+          },
+          BACK: "selectInterests",
         },
       },
       summary: {
         on: {
           CONFIRM: "completed",
           MODIFY: "selectFrequency",
+          BACK: "selectBudget",
         },
       },
       completed: {

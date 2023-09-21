@@ -1,26 +1,46 @@
 import { useMachine } from "@xstate/react";
+import { useRouter } from "expo-router";
 import React from "react";
-import { View } from "react-native";
 
 import { challengeStateMachine } from "./ChallengeStateMachine";
-import BudgetScreen from "./screens/BudgetScreen";
-import FrequencyScreen from "./screens/FrequencyScreen";
+import WizardScreen from "./components/WizardScreen";
 import InterestsScreen from "./screens/InterestsScreen";
-import { SummaryScreen } from "./screens/SummaryScreen";
-import TypeScreen from "./screens/TypeScreen";
+import SummaryScreen from "./screens/SummaryScreen";
+import ContainerView from "../ContainerView";
+
+export interface WizardOptionObject {
+  value: string;
+  label: string;
+}
 
 export default function WizardController() {
   const [state, send] = useMachine(challengeStateMachine);
+  const router = useRouter();
 
-  const handleSelectFrequency = (value: "DAILY" | "WEEKLY" | "MONTHLY") => {
+  const frequencies: WizardOptionObject[] = [
+    { value: "DAILY", label: "Daily" },
+    { value: "WEEKLY", label: "Weekly" },
+    { value: "MONTHLY", label: "Monthly" },
+  ];
+  const handleSelectFrequency = (value: string) => {
     send({ type: "CHOOSE_FREQUENCY", value });
   };
 
-  const handleSelectType = (value: "SOLO" | "COUPLES" | "FRIENDS") => {
+  const types: WizardOptionObject[] = [
+    { value: "SOLO", label: "Solo" },
+    { value: "COUPLES", label: "Couples" },
+    { value: "FRIENDS", label: "Friends" },
+  ];
+  const handleSelectType = (value: string) => {
     send({ type: "CHOOSE_TYPE", value });
   };
 
-  const handleSelectBudget = (value: "LOW" | "MEDIUM" | "HIGH") => {
+  const budgets: WizardOptionObject[] = [
+    { value: "LOW", label: "Free Only" },
+    { value: "MEDIUM", label: "$0-$50" },
+    { value: "HIGH", label: "$0-$200" },
+  ];
+  const handleSelectBudget = (value: string) => {
     send({ type: "CHOOSE_BUDGET", value });
   };
 
@@ -32,12 +52,24 @@ export default function WizardController() {
   });
 
   return (
-    <View>
+    <ContainerView style={{ width: "100%" }}>
       {state.matches("selectFrequency") && (
-        <FrequencyScreen onSelect={handleSelectFrequency} />
+        <WizardScreen
+          options={frequencies}
+          selectedOption={state.context.frequency}
+          onSelect={handleSelectFrequency}
+          onBack={() => router.back()}
+          screenIndex={1}
+        />
       )}
       {state.matches("selectType") && (
-        <TypeScreen onSelect={handleSelectType} />
+        <WizardScreen
+          options={types}
+          selectedOption={state.context.type}
+          onSelect={handleSelectType}
+          onBack={() => send("BACK")}
+          screenIndex={2}
+        />
       )}
       {state.matches("selectInterests") && (
         <InterestsScreen
@@ -45,13 +77,22 @@ export default function WizardController() {
           onSelectInterest={(interest) =>
             send({ type: "TOGGLE_INTEREST", interest })
           }
+          onBack={() => send("BACK")}
           onDone={() => send("DONE_SELECTING_INTERESTS")}
         />
       )}
       {state.matches("selectBudget") && (
-        <BudgetScreen onSelect={handleSelectBudget} />
+        <WizardScreen
+          options={budgets}
+          selectedOption={state.context.budget}
+          onSelect={handleSelectBudget}
+          onBack={() => send("BACK")}
+          screenIndex={3}
+        />
       )}
-      {state.matches("summary") && <SummaryScreen {...state.context} />}
-    </View>
+      {state.matches("summary") && (
+        <SummaryScreen context={state.context} onBack={() => send("BACK")} />
+      )}
+    </ContainerView>
   );
 }

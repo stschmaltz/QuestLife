@@ -21,11 +21,12 @@ const ThemedButton: React.FC<ButtonProps> = (props) => {
         }
       : {};
 
-  const textColor = mode === "contained" ? "#FFFCF9" : "#071108";
+  const textColor = mode === "contained" ? "#071108" : "#071108";
 
   return (
     <Button
       textColor={textColor}
+      labelStyle={{ fontWeight: "bold" }}
       {...props}
       style={[customTheme, props.style]}
     />
