@@ -55,6 +55,7 @@ export default function WizardController() {
     <ContainerView style={{ width: "100%" }}>
       {state.matches("selectFrequency") && (
         <WizardScreen
+          title="How often do you want to do challenges?"
           options={frequencies}
           selectedOption={state.context.frequency}
           onSelect={handleSelectFrequency}
@@ -64,6 +65,7 @@ export default function WizardController() {
       )}
       {state.matches("selectType") && (
         <WizardScreen
+          title="Who do you want to do challenges with?"
           options={types}
           selectedOption={state.context.type}
           onSelect={handleSelectType}
@@ -83,6 +85,7 @@ export default function WizardController() {
       )}
       {state.matches("selectBudget") && (
         <WizardScreen
+          title="What's your budget per challenge?"
           options={budgets}
           selectedOption={state.context.budget}
           onSelect={handleSelectBudget}

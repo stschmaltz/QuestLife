@@ -15,6 +15,7 @@ interface Props {
   onBack: () => void;
   selectedOption?: string;
   screenIndex: number;
+  title: string;
 }
 
 const WizardScreen: React.FC<Props> = ({
@@ -23,6 +24,7 @@ const WizardScreen: React.FC<Props> = ({
   options,
   selectedOption,
   screenIndex,
+  title,
 }) => {
   const { colors } = useTheme<CustomTheme>();
   const colorMap: Record<ValidColorMapIndexes, string> = {
@@ -36,7 +38,7 @@ const WizardScreen: React.FC<Props> = ({
 
   return (
     <ScreenContainer backgroundColor={backgroundColor} onBack={onBack}>
-      <ScreenTitleText title="How often do you want to do this?" />
+      <ScreenTitleText title={title} />
       {options.map(({ value, label }, index) => (
         <ColoredScreenButton
           key={value}
