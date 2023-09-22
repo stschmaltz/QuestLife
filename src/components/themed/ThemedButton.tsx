@@ -14,7 +14,7 @@ const ThemedButton: React.FC<ButtonProps> = (props) => {
           borderWidth: 3,
           borderColor: colors.outline,
           shadowColor: colors.shadow,
-          shadowOffset: { width: 0, height: 4 },
+          shadowOffset: { width: 2, height: 4 },
           shadowOpacity: 0.8,
           shadowRadius: 3,
           elevation: 5,

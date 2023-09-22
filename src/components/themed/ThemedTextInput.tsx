@@ -7,6 +7,7 @@ const ThemedTextInput: React.FC<TextInputProps> = (props) => {
   return (
     <TextInput
       outlineStyle={{
+        backgroundColor: theme.colors.surface,
         borderWidth: 2.7,
         borderColor: theme.colors.outline,
       }}

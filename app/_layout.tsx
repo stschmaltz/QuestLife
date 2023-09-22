@@ -45,7 +45,7 @@ export const colors: ThemeColors = {
   onError: "rgb(255, 255, 255)",
   errorContainer: "rgb(255, 218, 214)",
   onErrorContainer: "rgb(65, 0, 2)",
-  background: adjustColor("#C4A1FF", 80, "lighten"),
+  background: adjustColor("#C4A1FF", 60, "lighten"),
   onBackground: nightColor,
   surface: "rgb(255, 251, 255)",
   onSurface: nightColor,

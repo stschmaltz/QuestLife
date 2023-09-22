@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { StyleSheet } from "react-native";
 import { TextInput } from "react-native-paper";
 
 import ThemedTextInput from "../themed/ThemedTextInput";
@@ -25,7 +24,9 @@ export default function AuthInput({
       value={value}
       onChangeText={onChangeText}
       mode="outlined"
-      style={styles.input}
+      style={{
+        marginBottom: 10,
+      }}
       autoCapitalize="none"
       right={
         secureText ? (
@@ -39,9 +40,3 @@ export default function AuthInput({
     />
   );
 }
-
-const styles = StyleSheet.create({
-  input: {
-    marginBottom: 10,
-  },
-});

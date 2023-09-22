@@ -17,28 +17,42 @@ export default function WizardController() {
   const [state, send] = useMachine(challengeStateMachine);
   const router = useRouter();
 
-  const frequencies: WizardOptionObject[] = [
-    { value: "DAILY", label: "Daily" },
-    { value: "WEEKLY", label: "Weekly" },
-    { value: "MONTHLY", label: "Monthly" },
+  const categories: WizardOptionObject[] = [
+    { value: "SOLO", label: "Solo" },
+    { value: "COUPLE", label: "Couple" },
+    { value: "FRIENDS", label: "Friends" },
+    { value: "FAMILY", label: "Family" },
   ];
-  const handleSelectFrequency = (value: string) => {
-    send({ type: "CHOOSE_FREQUENCY", value });
+  const handleSelectCategory = (value: string) => {
+    send({ type: "CHOOSE_CATEGORY", value });
   };
 
-  const types: WizardOptionObject[] = [
-    { value: "SOLO", label: "Solo" },
-    { value: "COUPLES", label: "Couples" },
-    { value: "FRIENDS", label: "Friends" },
+  const objectives: WizardOptionObject[] = [
+    { value: "MEET_NEW_PEOPLE", label: "Meet New People" },
+    { value: "TRY_SOMETHING_NEW", label: "Try Something New" },
+    { value: "RELAX_AND_UNWIND", label: "Relax and Unwind" },
+    { value: "PHYSICAL_CHALLENGE", label: "Physical Challenge" },
+    { value: "MENTAL_CHALLENGE", label: "Mental Challenge" },
+    { value: "CONNECT_WITH_NATURE", label: "Connect with Nature" },
+    { value: "ARTISTIC_EXPRESSION", label: "Artistic Expression" },
   ];
-  const handleSelectType = (value: string) => {
-    send({ type: "CHOOSE_TYPE", value });
+  const handleSelectObjective = (value: string) => {
+    send({ type: "CHOOSE_OBJECTIVE", value });
+  };
+
+  const durations: WizardOptionObject[] = [
+    { value: "INSTANT", label: "Instant" },
+    { value: "SHORT_TERM", label: "Short-term" },
+    { value: "LONG_TERM", label: "Long-term" },
+  ];
+  const handleSelectDuration = (value: string) => {
+    send({ type: "CHOOSE_DURATION", value });
   };
 
   const budgets: WizardOptionObject[] = [
     { value: "LOW", label: "Free Only" },
-    { value: "MEDIUM", label: "$0-$50" },
-    { value: "HIGH", label: "$0-$200" },
+    { value: "MEDIUM", label: "Low Budget" },
+    { value: "HIGH", label: "Investment" },
   ];
   const handleSelectBudget = (value: string) => {
     send({ type: "CHOOSE_BUDGET", value });
@@ -53,24 +67,14 @@ export default function WizardController() {
 
   return (
     <ContainerView style={{ width: "100%" }}>
-      {state.matches("selectFrequency") && (
+      {state.matches("selectCategory") && (
         <WizardScreen
-          title="How often do you want to do challenges?"
-          options={frequencies}
-          selectedOption={state.context.frequency}
-          onSelect={handleSelectFrequency}
+          title="Who is doing this quest?"
+          options={categories}
+          selectedOption={state.context.category}
+          onSelect={handleSelectCategory}
           onBack={() => router.back()}
           screenIndex={1}
-        />
-      )}
-      {state.matches("selectType") && (
-        <WizardScreen
-          title="Who do you want to do challenges with?"
-          options={types}
-          selectedOption={state.context.type}
-          onSelect={handleSelectType}
-          onBack={() => send("BACK")}
-          screenIndex={2}
         />
       )}
       {state.matches("selectInterests") && (
@@ -83,9 +87,29 @@ export default function WizardController() {
           onDone={() => send("DONE_SELECTING_INTERESTS")}
         />
       )}
+      {state.matches("selectObjective") && (
+        <WizardScreen
+          title="Who do you want to do quests with?"
+          options={objectives}
+          selectedOption={state.context.type}
+          onSelect={handleSelectObjective}
+          onBack={() => send("BACK")}
+          screenIndex={2}
+        />
+      )}
+      {state.matches("selectDuration") && (
+        <WizardScreen
+          title="What length of quest are you looking for?"
+          options={durations}
+          selectedOption={state.context.duration}
+          onSelect={handleSelectDuration}
+          onBack={() => send("BACK")}
+          screenIndex={2}
+        />
+      )}
       {state.matches("selectBudget") && (
         <WizardScreen
-          title="What's your budget per challenge?"
+          title="What's your budget per quest?"
           options={budgets}
           selectedOption={state.context.budget}
           onSelect={handleSelectBudget}

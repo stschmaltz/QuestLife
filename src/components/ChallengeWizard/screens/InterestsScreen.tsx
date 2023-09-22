@@ -26,27 +26,30 @@ const InterestsScreen: React.FC<Props> = ({
 
   return (
     <ScreenContainer backgroundColor={colors.primaryContainer} onBack={onBack}>
-      <ScreenTitleText title="What are some of your interests?" />
+      <ScreenTitleText title="What are your interests?" />
       <View
         style={{
-          justifyContent: "space-between",
+          justifyContent: "space-around",
           flexDirection: "row",
           flexWrap: "wrap",
           paddingHorizontal: 10,
         }}
       >
         {[
-          "FOOD",
-          "EXERCISE",
           "INDOOR_SPORTS",
-          "VIDEO_GAMES",
-          "OUTDOOR_SPORTS",
-          "MUSIC",
-          "MOVIES",
-          "ARTS_AND_CRAFTS",
           "READING",
+          "MOVIES",
+          "VIDEO_GAMES",
           "WRITING",
+          "PLAYING_MUSIC",
+          "BOARD_GAMES",
+          "OUTDOOR_SPORTS",
+          "PAINTING",
           "COOKING",
+          "LISTENING_TO_MUSIC",
+          "EXERCISING",
+          "CRAFTING",
+          "BAKING",
         ]
           .filter((interest) => interest !== "")
           .map((interest, index) => (
