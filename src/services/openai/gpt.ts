@@ -1,5 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 
+import { Context } from "../../components/ChallengeWizard/WizardStateMachine";
+
 interface IMessage {
   role: "system" | "user";
   content: string;
@@ -12,10 +14,10 @@ interface IChoice {
 interface IOpenAIResponse {
   choices: IChoice[];
 }
+
 class OpenAIApi {
   private instance: AxiosInstance;
   private model: string;
-  private messages: IMessage[];
   private temperature: number;
   private top_p: number;
   private endpoint: string;
@@ -30,40 +32,24 @@ class OpenAIApi {
       },
     });
 
-    // Default values. This can be adjusted based on the desired behavior.
     this.top_p = 0.7;
     this.temperature = 0.8;
     this.model = "gpt-4";
     this.endpoint = "v1/chat/completions";
-    this.messages = [
-      {
-        role: "system",
-        content:
-          "You're a challenge generator for QuestLife, an app that provides users with personalized challenges based on their preferences, goals, budget, and limitations. Your task is to come up with 10 engaging, suitable, and realistic challenges tailored to each user's inputs. Please structure each challenge response in JSON format with fields 'challengeTitle', 'challengeDescription', and 'suggestedDuration'.",
-      },
-      { role: "user", content: "I want daily challenges." },
-      { role: "user", content: "I'll be taking the challenges solo." },
-      { role: "user", content: "My main goal is personal growth." },
-      {
-        role: "user",
-        content: "My interests are food, exercise, sports, and video games.",
-      },
-      { role: "user", content: "I have a low budget for these challenges." },
-      { role: "user", content: "No specific limitations." },
-      {
-        role: "user",
-        content: "My ideal duration for each challenge is 30 minutes.",
-      },
-    ];
   }
 
-  async sendPrompt(): Promise<string[]> {
+  async sendPromptWithContext(context: Context): Promise<string[]> {
+    const messages = this.createStateMachineMessages(context);
+    return this.sendPrompt(messages);
+  }
+
+  private async sendPrompt(messages: IMessage[]): Promise<string[]> {
     try {
       const response = await this.instance.post<IOpenAIResponse>(
         this.endpoint,
         {
           model: this.model,
-          messages: this.messages,
+          messages,
           temperature: this.temperature,
           top_p: this.top_p,
         },
@@ -73,6 +59,39 @@ class OpenAIApi {
       console.error(error);
       return [];
     }
+  }
+
+  /**
+   * Converts the xstate context into a series of messages
+   * suitable for the OpenAI API.
+   */
+  private createStateMachineMessages(context: Context): IMessage[] {
+    const systemMessage: IMessage = {
+      role: "system",
+      content:
+        "You're a creative challenge generator for QuestLife. Generate 10 challenges based on the user's inputs ensuring they're safe, feasible, and suitable. Deliver each challenge in proper JSON format with fields: 'challengeTitle', 'challengeDescription', and 'suggestedDuration'. Avoid using numbered lists or unnecessary new lines in the output. Be quite specific with the challenges, they should be interesting and fun.",
+    };
+
+    const userMessages: IMessage[] = [
+      {
+        role: "user",
+        content: `Challenge Category: ${context.category?.label}`,
+      },
+      {
+        role: "user",
+        content: `Interests, not all interests need to be used and you can generate things outside of those interests. They are for inspiration though.: ${context.interests
+          .map((interest) => interest.label)
+          .join(", ")}`,
+      },
+      { role: "user", content: `Objective: ${context.objective?.label}` },
+      {
+        role: "user",
+        content: `Duration: ${context.duration?.label} short="1-3hours"`,
+      },
+      { role: "user", content: `Budget: ${context.budget?.label}` },
+    ];
+
+    return [systemMessage, ...userMessages];
   }
 }
 

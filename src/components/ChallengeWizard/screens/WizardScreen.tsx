@@ -39,7 +39,6 @@ const WizardScreen: React.FC<Props> = ({
 
   const backgroundColor = colorMap[(screenIndex % 4) as ValidColorMapIndexes];
 
-  console.log("WizardScreen", { title, options, selectedOption });
   return (
     <ScreenContainer backgroundColor={backgroundColor} onBack={onBack}>
       <ScreenTitleText title={title} />
