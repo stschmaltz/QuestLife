@@ -1,5 +1,5 @@
 import React from "react";
-import { useTheme } from "react-native-paper";
+import { Text, useTheme } from "react-native-paper";
 
 import { CustomTheme } from "../../../types/theme";
 import { WizardOptionObject } from "../WizardController";
@@ -11,11 +11,12 @@ import ScreenTitleText from "../components/ScreenTitleText";
 
 interface Props {
   options: WizardOptionObject[];
-  onSelect: (value: string) => void;
+  onSelect: (value: WizardOptionObject) => void;
   onBack: () => void;
-  selectedOption?: string;
+  selectedOption?: WizardOptionObject;
   screenIndex: number;
   title: string;
+  secondaryText?: string;
 }
 
 const WizardScreen: React.FC<Props> = ({
@@ -25,6 +26,7 @@ const WizardScreen: React.FC<Props> = ({
   selectedOption,
   screenIndex,
   title,
+  secondaryText,
 }) => {
   const { colors } = useTheme<CustomTheme>();
   const colorMap: Record<ValidColorMapIndexes, string> = {
@@ -32,21 +34,32 @@ const WizardScreen: React.FC<Props> = ({
     1: colors.secondaryContainer,
     2: colors.tertiaryContainer,
     3: colors.quaternaryContainer,
+    4: colors.quinaryContainer,
   };
 
   const backgroundColor = colorMap[(screenIndex % 4) as ValidColorMapIndexes];
 
+  console.log("WizardScreen", { title, options, selectedOption });
   return (
     <ScreenContainer backgroundColor={backgroundColor} onBack={onBack}>
       <ScreenTitleText title={title} />
-      {options.map(({ value, label }, index) => (
-        <ColoredScreenButton
-          key={value}
-          index={screenIndex + index + 1}
-          onPress={() => onSelect(value)}
-          toggled={selectedOption === value}
+      {secondaryText && (
+        <Text
+          variant="bodyMedium"
+          style={{ textAlign: "center", marginBottom: 30 }}
         >
-          {label}
+          {" "}
+          {secondaryText}
+        </Text>
+      )}
+      {options.map((option, index) => (
+        <ColoredScreenButton
+          key={option.value}
+          index={screenIndex + index + 1}
+          onPress={() => onSelect(option)}
+          toggled={selectedOption?.value === option.value}
+        >
+          {option.label}
         </ColoredScreenButton>
       ))}
     </ScreenContainer>

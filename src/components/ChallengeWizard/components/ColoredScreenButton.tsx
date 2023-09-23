@@ -5,7 +5,7 @@ import ScreenButton from "./ScreenButton";
 import { CustomTheme } from "../../../types/theme";
 import { adjustColor } from "../../../utils/color-helpers";
 
-export type ValidColorMapIndexes = 0 | 1 | 2 | 3;
+export type ValidColorMapIndexes = 0 | 1 | 2 | 3 | 4;
 
 type ColoredButtonProps = ButtonProps & {
   index: number;
@@ -17,6 +17,7 @@ const ColoredScreenButton: React.FC<ColoredButtonProps> = ({
   onPress,
   toggled = false,
   children,
+  style,
 }) => {
   const { colors } = useTheme<CustomTheme>();
   const colorMap: Record<ValidColorMapIndexes, string> = {
@@ -24,18 +25,22 @@ const ColoredScreenButton: React.FC<ColoredButtonProps> = ({
     1: colors.secondary,
     2: colors.tertiary,
     3: colors.quaternary,
+    4: colors.quinary,
   };
 
-  const backgroundColor = colorMap[(index % 4) as ValidColorMapIndexes];
+  const backgroundColor = colorMap[(index % 5) as ValidColorMapIndexes];
 
   return (
     <ScreenButton
-      style={{
-        borderColor: toggled ? colors.outlineVariant : colors.outline,
-        backgroundColor: toggled
-          ? adjustColor(backgroundColor, 40, "lighten")
-          : backgroundColor,
-      }}
+      style={[
+        {
+          borderColor: toggled ? colors.outlineVariant : colors.outline,
+          backgroundColor: toggled
+            ? adjustColor(backgroundColor, 40, "lighten")
+            : backgroundColor,
+        },
+        style,
+      ]}
       onPress={onPress}
     >
       {children}

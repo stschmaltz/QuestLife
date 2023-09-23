@@ -12,9 +12,10 @@ const openAIInstance = new OpenAIApi();
 
 const nightColor = "#071108";
 const primaryColor = "#FFA07A";
-const secondaryColor = "#B5D2AD";
-const tertiaryColor = "#FDFD96";
+const secondaryColor = "#BAFCA2";
+const tertiaryColor = adjustColor("#FDFD96", 5, "darken");
 const quaternaryColor = "#A7DBD8";
+const quinaryColor = adjustColor("#C4A1FF", 30, "lighten");
 
 export const colors: ThemeColors = {
   primary: primaryColor,
@@ -37,6 +38,11 @@ export const colors: ThemeColors = {
   onQuaternary: adjustColor(quaternaryColor, 30, "darken"),
   quaternaryContainer: adjustColor(quaternaryColor, 60, "lighten"),
   onQuaternaryContainer: adjustColor(quaternaryColor, 60, "lighten"),
+
+  quinary: quinaryColor,
+  onQuinary: adjustColor(quinaryColor, 30, "darken"),
+  quinaryContainer: adjustColor(quinaryColor, 60, "lighten"),
+  onQuinaryContainer: adjustColor(quinaryColor, 60, "lighten"),
 
   lightText: "rgb(255, 255, 255)",
   darkText: nightColor,

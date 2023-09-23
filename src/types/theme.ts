@@ -5,6 +5,10 @@ interface CustomColors {
   onQuaternary: string;
   quaternaryContainer: string;
   onQuaternaryContainer: string;
+  quinary: string;
+  onQuinary: string;
+  quinaryContainer: string;
+  onQuinaryContainer: string;
 
   lightText: string;
   darkText: string;
