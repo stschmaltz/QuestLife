@@ -25,6 +25,11 @@ class OpenAIApi {
   private baseUrl: string = "https://api.openai.com/";
 
   constructor() {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const gpt4Model = "gpt-4";
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const gpt3Model = "gpt-3.5-turbo";
+
     this.instance = axios.create({
       baseURL: this.baseUrl,
       headers: {
@@ -33,9 +38,9 @@ class OpenAIApi {
       },
     });
 
-    this.top_p = 0.7;
+    this.top_p = 1;
     this.temperature = 1;
-    this.model = "gpt-4";
+    this.model = gpt3Model;
     this.endpoint = "v1/chat/completions";
   }
 
@@ -52,11 +57,11 @@ class OpenAIApi {
           model: this.model,
           messages,
           temperature: this.temperature,
-          // top_p: this.top_p,
+          top_p: this.top_p,
         },
       );
 
-      console.log(response.data.choices.length);
+      console.log(response.data.choices[0].message.content);
       const result = response.data.choices.map(
         (choice) => choice.message.content,
       )[0];
@@ -75,11 +80,18 @@ class OpenAIApi {
    * suitable for the OpenAI API.
    */
   private createStateMachineMessages(context: Context): IMessage[] {
-    const systemMessage: IMessage = {
-      role: "system",
-      content:
-        "Craft 10 unique challenges for QuestLife using the provided context. While the user's interests serve as a starting point, do not limit the challenges exclusively to those interests. Branch out and incorporate elements from other domains to ensure a diverse set of experiences. Each challenge should blend the user's category, objective, duration, and budget, and be actionable, multi-step, incorporating real-world elements or current trends. Return challenges in a JSON format with 'challengeTitle', 'challengeDescription', and 'suggestedDuration'. Avoid overly generic suggestions. Examples: 'Visit a local museum and sketch your favorite exhibit' or 'Cook a dish from a country you've never visited, keeping in mind the budget'. Inspire users to embark on adventures that encourage exploration beyond their comfort zone.",
-    };
+    const systemMessages: IMessage[] = [
+      {
+        role: "system",
+        content:
+          "Craft 10 unique challenges for QuestLife using the provided context. While the user's interests serve as a starting point, do not limit the challenges exclusively to those interests. Branch out and incorporate elements from other domains to ensure a diverse set of experiences. Each challenge should blend the user's category, objective, duration, and budget, and be actionable, multi-step, incorporating real-world elements or current trends. Avoid generic suggestions. Inspire users to embark on adventures that encourage exploration beyond their comfort zone. Do not suggest build your own board game.",
+      },
+      {
+        role: "system",
+        content:
+          "Return challenges in the format of a JSON array, where each challenge is an object with fields 'challengeTitle', 'challengeDescription', and 'suggestedDuration'. I will be consuming the result programatically using Javascript using JSON.parse.",
+      },
+    ];
 
     const userMessages: IMessage[] = [
       {
@@ -90,9 +102,14 @@ class OpenAIApi {
         role: "user",
         content: `Interests, not all interests need to be used and you can generate things outside of those interests. They are for inspiration though.: ${context.interests
           .map((interest) => interest.label)
-          .join(", ")}`,
+          .join(
+            ", ",
+          )}. if there are no interests, the results should be random.`,
       },
-      { role: "user", content: `Objective: ${context.objective?.label}` },
+      {
+        role: "user",
+        content: `Objective: ${context.objective?.label}. This should be considered the most important user input when generating results.`,
+      },
       {
         role: "user",
         content: `Duration: ${context.duration?.label} (short-term indicates 1-2 hours)`,
@@ -100,7 +117,7 @@ class OpenAIApi {
       { role: "user", content: `Budget: ${context.budget?.label}` },
     ];
 
-    return [systemMessage, ...userMessages];
+    return [...systemMessages, ...userMessages];
   }
 }
 

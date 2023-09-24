@@ -9,7 +9,7 @@ import { useOpenAI } from "../../../src/context/OpenAIProvider";
 import { Quest } from "../../../src/services/firestore/quests";
 
 export default function Home() {
-  const { user } = useAuth();
+  const { user, loadingUser } = useAuth();
 
   const [isLoadingPrompt, setIsLoadingPrompt] = React.useState(false);
   const [prompt, setPrompt] = React.useState<Quest[]>([]);
@@ -46,7 +46,7 @@ export default function Home() {
     },
   };
 
-  if (!user || user === "loading") {
+  if (!user || loadingUser) {
     return null;
   }
 

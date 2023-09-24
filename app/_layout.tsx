@@ -52,7 +52,7 @@ export const colors: ThemeColors = {
   errorContainer: "rgb(255, 218, 214)",
   onErrorContainer: "rgb(65, 0, 2)",
   background: adjustColor("#C4A1FF", 60, "lighten"),
-  onBackground: nightColor,
+  onBackground: adjustColor("#C4A1FF", 30, "lighten"),
   surface: "rgb(255, 251, 255)",
   onSurface: nightColor,
   surfaceVariant: "rgb(244, 221, 220)",
@@ -69,12 +69,12 @@ export const colors: ThemeColors = {
   onSurfaceDisabled: "rgba(32, 26, 26, 0.38)",
   backdrop: "rgba(59, 45, 44, 0.4)",
   elevation: {
-    level0: nightColor,
-    level1: nightColor,
-    level2: nightColor,
-    level3: nightColor,
-    level4: nightColor,
-    level5: nightColor,
+    level0: "rgb(255, 251, 255)",
+    level1: "rgb(255, 251, 255)",
+    level2: "rgb(255, 251, 255)",
+    level3: "rgb(255, 251, 255)",
+    level4: "rgb(255, 251, 255)",
+    level5: "rgb(255, 251, 255)",
   },
 };
 

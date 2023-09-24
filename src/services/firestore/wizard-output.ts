@@ -1,9 +1,14 @@
-import { collection, doc, setDoc } from "firebase/firestore";
+import { Timestamp, collection, doc, setDoc } from "firebase/firestore";
 
 import { firestore } from "../../../firebase.config";
 import { Context } from "../../components/ChallengeWizard/WizardStateMachine";
 
-type WizardOutput = { wizardContext: Context; uid: string; id: string };
+type WizardOutput = {
+  wizardContext: Context;
+  uid: string;
+  id: string;
+  createdAt: Timestamp;
+};
 
 export const saveUserWizardOutput = async (
   wizardContext: Context,
@@ -22,6 +27,7 @@ export const saveUserWizardOutput = async (
     duration: wizardContext.duration,
     budget: wizardContext.budget,
     id: newContextDocRef.id,
+    createdAt: Timestamp.now(),
   });
 
   return {
@@ -34,5 +40,6 @@ export const saveUserWizardOutput = async (
       duration: wizardContext.duration,
       budget: wizardContext.budget,
     },
+    createdAt: Timestamp.now(),
   };
 };

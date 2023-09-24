@@ -4,10 +4,11 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 
 import { auth } from "../../firebase.config";
 
-type ContextState = { user: User | null | undefined | "loading" };
+type ContextState = { user: User | null | undefined; loadingUser: boolean };
 
 const AuthContext = createContext<ContextState>({
   user: null,
+  loadingUser: true,
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -17,9 +18,11 @@ export function AuthProvider({
 }: {
   children: JSX.Element;
 }): JSX.Element {
-  const [user, setUser] = useState<User | null | "loading">("loading");
+  const [user, setUser] = useState<User | null>();
+  const [loading, setLoading] = useState(true);
   const segments = useSegments();
   const router = useRouter();
+
   useEffect(() => {
     const unsubscribeFromAuthStatusChanged = onAuthStateChanged(
       auth,
@@ -27,9 +30,11 @@ export function AuthProvider({
         if (user) {
           // User is signed in
           setUser(user);
+          setLoading(false);
         } else {
           // User is signed out
           setUser(null);
+          setLoading(false);
         }
       },
     );
@@ -38,7 +43,7 @@ export function AuthProvider({
   }, []);
 
   useEffect(() => {
-    if (user === "loading") return;
+    if (loading) return;
 
     const isInUnauthorizedRoute = segments[0] === "(unauthorized)";
 
@@ -52,6 +57,8 @@ export function AuthProvider({
   }, [user, segments]);
 
   return (
-    <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, loadingUser: loading }}>
+      {children}
+    </AuthContext.Provider>
   );
 }
