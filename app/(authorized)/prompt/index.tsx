@@ -6,12 +6,13 @@ import ContainerView from "../../../src/components/ContainerView";
 import ThemedButton from "../../../src/components/themed/ThemedButton";
 import { useAuth } from "../../../src/context/AuthProvider";
 import { useOpenAI } from "../../../src/context/OpenAIProvider";
+import { Quest } from "../../../src/services/firestore/quests";
 
 export default function Home() {
   const { user } = useAuth();
 
   const [isLoadingPrompt, setIsLoadingPrompt] = React.useState(false);
-  const [prompt, setPrompt] = React.useState<string[]>([]);
+  const [prompt, setPrompt] = React.useState<Quest[]>([]);
   const openAI = useOpenAI();
 
   const sampleContext: Context = {
@@ -66,7 +67,11 @@ export default function Home() {
         Send Prompt
       </ThemedButton>
       {prompt.map((p) => (
-        <Text key={p}>{p}</Text>
+        <>
+          <Text key={p.challengeTitle}>{p.challengeTitle}</Text>
+          <Text key={p.challengeDescription}>{p.challengeDescription}</Text>
+          <Text key={p.suggestedDuration}>{p.suggestedDuration}</Text>
+        </>
       ))}
       {isLoadingPrompt && <Text>Loading prompt...</Text>}
     </ContainerView>

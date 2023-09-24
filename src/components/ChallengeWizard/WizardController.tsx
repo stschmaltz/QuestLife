@@ -51,10 +51,6 @@ const WizardController: React.FC<Props> = ({ onComplete }) => {
     send("DONE_SELECTING_INTERESTS");
   };
 
-  console.log("WOOOOOO", {
-    context,
-  });
-
   return (
     <ContainerView style={{ width: "100%" }}>
       {state.matches("selectCategory") && (

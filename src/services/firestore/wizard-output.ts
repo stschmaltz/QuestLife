@@ -1,6 +1,4 @@
-// firestore/context.ts
-
-import { doc, setDoc } from "firebase/firestore";
+import { collection, doc, setDoc } from "firebase/firestore";
 
 import { firestore } from "../../../firebase.config";
 import { Context } from "../../components/ChallengeWizard/WizardStateMachine";
@@ -13,20 +11,21 @@ export const saveUserWizardOutput = async (
 ): Promise<WizardOutput> => {
   console.log("wizardContext", wizardContext, "uid", uid);
 
-  const contextRef = doc(firestore, "wizardContexts", uid);
+  const wizardContextsCollection = collection(firestore, "wizardContexts");
+  const newContextDocRef = doc(wizardContextsCollection);
 
-  await setDoc(contextRef, {
+  await setDoc(newContextDocRef, {
     uid,
     category: wizardContext.category,
     interests: wizardContext.interests,
     objective: wizardContext.objective,
     duration: wizardContext.duration,
     budget: wizardContext.budget,
-    id: contextRef.id,
+    id: newContextDocRef.id,
   });
 
   return {
-    id: contextRef.id,
+    id: newContextDocRef.id,
     uid,
     wizardContext: {
       category: wizardContext.category,

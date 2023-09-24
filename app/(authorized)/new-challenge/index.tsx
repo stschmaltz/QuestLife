@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from "react";
+import { ScrollView } from "react-native";
 import { Card, Text } from "react-native-paper";
 
 import WizardController from "../../../src/components/ChallengeWizard/WizardController";
@@ -31,14 +32,13 @@ export default function NewChallenge() {
         const wizardOutput = await saveUserWizardOutput(context, user.uid);
 
         console.log("wizardOutput", wizardOutput);
-        const challengeStrings = await openAIApi.sendPromptWithContext(context);
-        console.log("challengeStrings", challengeStrings);
-        const generatedQuests: Quest[] = challengeStrings.map((str) =>
-          JSON.parse(str),
-        );
+        const generatedQuests: Quest[] =
+          await openAIApi.sendPromptWithContext(context);
+        console.log("generatedQuests", generatedQuests);
 
         await saveGeneratedQuests({
           uid: wizardOutput.uid,
+          wizardContextId: wizardOutput.id,
           quests: generatedQuests,
         });
         setQuests(generatedQuests);
@@ -61,16 +61,18 @@ export default function NewChallenge() {
 
   // Render function for generated quests
   const renderQuests = () => (
-    <Card>
-      {quests?.map((quest, index) => (
-        <>
-          <Card.Title title={quest.challengeTitle} key={index} />
-          <Card.Content>
-            <Text>{quest.challengeDescription}</Text>
-            <Text>{quest.suggestedDuration}</Text>
-          </Card.Content>
-        </>
-      ))}
+    <Card style={{ backgroundColor: "#fff", overflow: "scroll" }}>
+      <ScrollView>
+        {quests?.map((quest, index) => (
+          <>
+            <Card.Title title={quest.challengeTitle} key={index} />
+            <Card.Content>
+              <Text>{quest.challengeDescription}</Text>
+              <Text>{quest.suggestedDuration}</Text>
+            </Card.Content>
+          </>
+        ))}
+      </ScrollView>
     </Card>
   );
 

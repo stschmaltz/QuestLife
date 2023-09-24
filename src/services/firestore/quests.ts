@@ -1,6 +1,4 @@
-// firestore/quests.ts
-
-import { doc, setDoc } from "firebase/firestore";
+import { collection, doc, setDoc } from "firebase/firestore";
 
 import { firestore } from "../../../firebase.config";
 
@@ -24,6 +22,7 @@ export interface Quest {
 
 export interface QuestCollection {
   uid: string;
+  wizardContextId: string;
   quests: Quest[];
 }
 
@@ -32,8 +31,14 @@ export const saveGeneratedQuests = async (
 ): Promise<Quest[]> => {
   console.log("quests", data.quests, "uid", data.uid);
 
-  const challengeRef = doc(firestore, "quests", data.uid);
-  await setDoc(challengeRef, { challenges: data.quests });
+  const wizardContextsCollection = collection(firestore, "quests");
+  const newDocRef = doc(wizardContextsCollection);
+
+  await setDoc(newDocRef, {
+    uid: data.uid,
+    wizardContextId: data.wizardContextId,
+    challenges: data.quests,
+  });
 
   return data.quests;
 };
