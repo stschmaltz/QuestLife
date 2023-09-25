@@ -42,7 +42,7 @@ class QuestManager {
   async saveGeneratedQuests(data: CreateQuestPackage): Promise<Quest[]> {
     console.log("quests", data.quests, "uid", data.uid);
 
-    if (!data.quests.length) {
+    if (!data.quests?.length) {
       throw new Error("No quests generated");
     }
 

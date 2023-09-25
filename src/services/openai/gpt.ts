@@ -56,12 +56,12 @@ class OpenAIApi {
         {
           model: this.model,
           messages,
-          temperature: this.temperature,
-          top_p: this.top_p,
+          // temperature: this.temperature,
+          // top_p: this.top_p,
         },
       );
 
-      console.log(response.data.choices[0].message.content);
+      console.log("RESPONSE", response.data.choices[0].message.content);
       const result = response.data.choices.map(
         (choice) => choice.message.content,
       )[0];
@@ -84,12 +84,17 @@ class OpenAIApi {
       {
         role: "system",
         content:
-          "Craft 10 unique challenges for QuestLife using the provided context. While the user's interests serve as a starting point, do not limit the challenges exclusively to those interests. Branch out and incorporate elements from other domains to ensure a diverse set of experiences. Each challenge should blend the user's category, objective, duration, and budget, and be actionable, multi-step, incorporating real-world elements or current trends. Avoid generic suggestions. Inspire users to embark on adventures that encourage exploration beyond their comfort zone. Do not suggest build your own board game.",
+          "Craft 5 unique challenges for QuestLife using the provided context. While the user's interests serve as a starting point, do not limit the challenges exclusively to those interests. Branch out and incorporate elements from other domains to ensure a diverse set of experiences. Each challenge should blend the user's category, objective, duration, and budget, and be actionable, multi-step, incorporating real-world elements or current trends. Avoid generic suggestions. Inspire users to embark on adventures that encourage exploration beyond their comfort zone. Do not suggest build your own board game. Return challenges in the format of a JSON array, where each challenge is an object with fields 'challengeTitle', 'challengeDescription', and 'suggestedDuration'. I will be consuming the result programatically using Javascript using JSON.parse. Additionally the challenges should be quirky and fun and deeply consider the user's input to craft a tailored response.",
       },
       {
         role: "system",
         content:
           "Return challenges in the format of a JSON array, where each challenge is an object with fields 'challengeTitle', 'challengeDescription', and 'suggestedDuration'. I will be consuming the result programatically using Javascript using JSON.parse.",
+      },
+      {
+        role: "system",
+        content:
+          "Don't immediately assume your generating something unique, take your time to ensure the result is truly unique and interesting.",
       },
     ];
 
@@ -114,7 +119,10 @@ class OpenAIApi {
         role: "user",
         content: `Duration: ${context.duration?.label} (short-term indicates 1-2 hours)`,
       },
-      { role: "user", content: `Budget: ${context.budget?.label}` },
+      {
+        role: "user",
+        content: `Budget: ${context.budget?.label}. free is free, low is $0-50, investment is up to $200`,
+      },
     ];
 
     return [...systemMessages, ...userMessages];

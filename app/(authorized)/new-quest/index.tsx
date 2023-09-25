@@ -78,7 +78,7 @@ export default function NewQuest() {
     <ContainerView style={{ alignItems: "center" }}>
       {isLoading || loadingUser ? (
         renderLoading()
-      ) : quests.length === 0 ? (
+      ) : quests?.length === 0 ? (
         <WizardController onComplete={handleWizardCompletion} />
       ) : (
         renderQuests()
