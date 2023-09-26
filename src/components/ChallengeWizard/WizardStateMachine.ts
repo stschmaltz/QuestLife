@@ -105,6 +105,7 @@ const wizardStateMachine = createMachine<any, WizardEvent>(
       toggleInterest: assign({
         interests: (context, event) => {
           if (event.type !== "TOGGLE_INTEREST") return context.interests;
+
           const interest = event.interest;
           const interests: WizardOptionObject[] = [...context.interests];
           const index = interests.findIndex((i) => i.value === interest.value);

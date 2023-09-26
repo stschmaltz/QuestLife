@@ -29,7 +29,7 @@ const objectives: WizardOptionObject[] = [
   { value: "TRY_SOMETHING_NEW", label: "Try Something New" },
   { value: "RELAX_AND_UNWIND", label: "Relax and Unwind" },
   { value: "PHYSICAL_CHALLENGE", label: "Physical Challenge" },
-  { value: "MENTAL_CHALLENGE", label: "Mental Challenge" },
+  { value: "HAVE_FUN", label: "Have Fun" },
   { value: "CONNECT_WITH_NATURE", label: "Connect with Nature" },
   { value: "ARTISTIC_EXPRESSION", label: "Artistic Expression" },
 ];

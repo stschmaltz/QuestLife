@@ -40,7 +40,7 @@ class OpenAIApi {
 
     this.top_p = 1;
     this.temperature = 1;
-    this.model = gpt3Model;
+    this.model = gpt4Model;
     this.endpoint = "v1/chat/completions";
   }
 
@@ -84,17 +84,12 @@ class OpenAIApi {
       {
         role: "system",
         content:
-          "Craft 5 unique challenges for QuestLife using the provided context. While the user's interests serve as a starting point, do not limit the challenges exclusively to those interests. Branch out and incorporate elements from other domains to ensure a diverse set of experiences. Each challenge should blend the user's category, objective, duration, and budget, and be actionable, multi-step, incorporating real-world elements or current trends. Avoid generic suggestions. Inspire users to embark on adventures that encourage exploration beyond their comfort zone. Do not suggest build your own board game. Return challenges in the format of a JSON array, where each challenge is an object with fields 'challengeTitle', 'challengeDescription', and 'suggestedDuration'. I will be consuming the result programatically using Javascript using JSON.parse. Additionally the challenges should be quirky and fun and deeply consider the user's input to craft a tailored response.",
+          "Craft 5 unique challenges for QuestLife using the provided context. While the user's interests serve as a starting point, do not limit the challenges exclusively to those interests. Branch out and incorporate elements from other domains to ensure a diverse set of experiences. Each challenge should blend the user's category, objective, duration, and budget, and be actionable, multi-step, incorporating real-world elements or current trends. Avoid generic suggestions. Inspire users to embark on adventures that encourage exploration beyond their comfort zone. Do not suggest build your own board game. Return challenges in the format of a JSON array, where each challenge is an object with fields 'challengeTitle', 'challengeDescription', and 'suggestedDuration'. I will be consuming the result programatically using Javascript using JSON.parse. Additionally the challenges should be quirky and fun and deeply consider the user's input to craft a tailored response. Do not respond with anything other than the JSON array of challenges.",
       },
       {
         role: "system",
         content:
-          "Return challenges in the format of a JSON array, where each challenge is an object with fields 'challengeTitle', 'challengeDescription', and 'suggestedDuration'. I will be consuming the result programatically using Javascript using JSON.parse.",
-      },
-      {
-        role: "system",
-        content:
-          "Don't immediately assume your generating something unique, take your time to ensure the result is truly unique and interesting.",
+          "Take your time to generate truly unique and interesting challenges. This is the most important part of the user flow.",
       },
     ];
 
@@ -105,7 +100,7 @@ class OpenAIApi {
       },
       {
         role: "user",
-        content: `Interests, not all interests need to be used and you can generate things outside of those interests. They are for inspiration though.: ${context.interests
+        content: `For inspiration, not required to have challenges include interests: ${context.interests
           .map((interest) => interest.label)
           .join(
             ", ",
@@ -113,15 +108,15 @@ class OpenAIApi {
       },
       {
         role: "user",
-        content: `Objective: ${context.objective?.label}. This should be considered the most important user input when generating results.`,
+        content: `Objective: ${context.objective?.label}. Let's STRONGLY consider this objective when generating each.`,
       },
       {
         role: "user",
-        content: `Duration: ${context.duration?.label} (short-term indicates 1-2 hours)`,
+        content: `Duration: ${context.duration?.label} (instant is something you can do now and within an hour or two. short-term indicates 1-2 hours, Long-term indicates 3+ hours, maybe multiple days/weeks)`,
       },
       {
         role: "user",
-        content: `Budget: ${context.budget?.label}. free is free, low is $0-50, investment is up to $200`,
+        content: `Budget: ${context.budget?.label}. free is completely free, low is $0-50, investment is 0-$200`,
       },
     ];
 
