@@ -23,6 +23,7 @@ export interface Quest {
   unlocked?: boolean;
   hint?: string;
   createdAt?: Timestamp;
+  initialIndex: number;
 }
 
 export interface QuestPackage {
@@ -34,12 +35,16 @@ export interface QuestPackage {
   createdAt?: Timestamp;
 }
 
-type CreateQuestPackage = Omit<QuestPackage, "id" | "title">;
+type CreateQuestPackageQuest = Omit<Quest, "initialIndex">;
+
+type CreateQuestPackage = Omit<QuestPackage, "id" | "title" | "quests"> & {
+  quests: CreateQuestPackageQuest[];
+};
 
 class QuestManager {
   private questRef = collection(firestore, "questPackages");
 
-  async saveGeneratedQuests(data: CreateQuestPackage): Promise<Quest[]> {
+  async saveGeneratedQuests(data: CreateQuestPackage): Promise<QuestPackage> {
     console.log("quests", data.quests, "uid", data.uid);
 
     if (!data.quests?.length) {
@@ -55,16 +60,17 @@ class QuestManager {
       wizardContextId: data.wizardContextId,
       id: newDocRef.id,
       createdAt: now,
-      quests: data.quests.map((quest) => ({
+      quests: data.quests.map((quest, index) => ({
         unlocked: false,
         createdAt: now,
+        initialIndex: index,
         ...quest,
       })),
     };
 
     await setDoc(newDocRef, newDoc);
 
-    return data.quests;
+    return newDoc;
   }
 
   async getRecentQuests(userId: string, x: number): Promise<QuestPackage[]> {
@@ -91,6 +97,7 @@ class QuestManager {
           unlocked: quest.unlocked,
           hint: quest.hint,
           createdAt: quest.createdAt,
+          initialIndex: quest.initialIndex,
         })),
         createdAt: doc.data().createdAt,
         uid: doc.data().uid,
@@ -121,6 +128,7 @@ class QuestManager {
             unlocked: quest.unlocked,
             hint: quest.hint,
             createdAt: quest.createdAt,
+            initialIndex: quest.initialIndex,
           })),
           title: questPackageData.title,
           uid: questPackageData.uid,
