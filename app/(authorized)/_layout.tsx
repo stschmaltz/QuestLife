@@ -1,15 +1,44 @@
 import { Tabs } from "expo-router";
 import React from "react";
 import { View } from "react-native";
+import { useTheme } from "react-native-paper";
 
 import LogoutButton from "../../src/components/auth/LogoutButton";
+import { CustomTheme } from "../../src/types/theme";
 
 export default function AuthorizedLayout() {
+  const { colors } = useTheme<CustomTheme>();
+
   return (
-    <View style={{ flex: 1 }}>
+    <View
+      style={{
+        flex: 1,
+      }}
+    >
       <Tabs
         screenOptions={{
           headerRight: () => <LogoutButton />,
+          tabBarStyle: {
+            justifyContent: "space-around",
+            alignItems: "center",
+            backgroundColor: colors.background,
+
+            paddingTop: 5,
+            paddingBottom: 5,
+            height: 65,
+            borderWidth: 0,
+            opacity: 1,
+          },
+
+          tabBarItemStyle: {
+            borderRadius: 15,
+            backgroundColor: "#fff",
+            borderColor: "#000000",
+            borderWidth: 1,
+            maxWidth: 70,
+            marginHorizontal: 20,
+            paddingBottom: 5,
+          },
         }}
       >
         <Tabs.Screen

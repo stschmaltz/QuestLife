@@ -19,10 +19,12 @@ const QuestTitle: React.FC<Props> = ({ title }) => {
         alignItems: "center",
         justifyContent: "center",
         flex: 1,
-        maxHeight: 100,
+        paddingVertical: 20,
+        borderBottomWidth: 1,
+        borderColor: colors.shadow,
       }}
     >
-      <Text variant="displaySmall" style={{ fontWeight: "bold" }}>
+      <Text variant="headlineSmall" style={{ fontWeight: "bold" }}>
         {title}
       </Text>
     </View>

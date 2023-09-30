@@ -1,21 +1,26 @@
 import React from "react";
 import { View } from "react-native";
 
-import QuestActions from "./QuestActions";
 import QuestDescription from "./QuestDescription";
-import { Quest } from "../../../../services/firestore/quests";
-import QuestTitle from "../QuestTitle";
+import { Quest } from "../../../../services/firestore/quests/quest.types";
+import ThemedButton from "../../../themed/ThemedButton";
 
 interface Props {
   quest: Quest;
+  completeQuest: (quest: Quest) => void;
 }
 
-const UnlockedQuestView: React.FC<Props> = ({ quest }) => {
+const UnlockedQuestView: React.FC<Props> = ({ quest, completeQuest }) => {
   return (
     <View style={{ flex: 1, width: "100%" }}>
-      <View style={{ width: "100%", flex: 1 }}>
-        <QuestTitle title={quest.challengeTitle} />
-      </View>
+      {/* <QuestActions
+          onEnhance={() => {
+            console.log("ENHANCE");
+          }}
+          onSwap={() => {
+            console.log("SWAP");
+          }}
+        /> */}
       <View
         style={{
           flex: 1,
@@ -30,17 +35,18 @@ const UnlockedQuestView: React.FC<Props> = ({ quest }) => {
       <View
         style={{
           paddingHorizontal: 40,
-          paddingBottom: 50,
+          paddingBottom: 20,
         }}
       >
-        <QuestActions
-          onEnhance={() => {
-            console.log("ENHANCE");
+        <ThemedButton
+          mode="contained"
+          onPress={() => {
+            completeQuest(quest);
           }}
-          onSwap={() => {
-            console.log("SWAP");
-          }}
-        />
+          style={{}}
+        >
+          Complete Quest
+        </ThemedButton>
       </View>
     </View>
   );

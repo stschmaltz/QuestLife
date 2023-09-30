@@ -3,7 +3,7 @@ import { ButtonProps, useTheme } from "react-native-paper";
 
 import ScreenButton from "./ScreenButton";
 import { CustomTheme } from "../../../types/theme";
-import { adjustColor } from "../../../utils/color-helpers";
+import { adjustColor } from "../../../utils/colorHelpers";
 
 export type ValidColorMapIndexes = 0 | 1 | 2 | 3 | 4;
 

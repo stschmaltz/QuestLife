@@ -6,7 +6,7 @@ import ContainerView from "../../../src/components/ContainerView";
 import ThemedButton from "../../../src/components/themed/ThemedButton";
 import { useAuth } from "../../../src/context/AuthProvider";
 import { useOpenAI } from "../../../src/context/OpenAIProvider";
-import { Quest } from "../../../src/services/firestore/quests";
+import { Quest } from "../../../src/services/firestore/quests/quest.types";
 
 export default function Home() {
   const { user, loadingUser } = useAuth();

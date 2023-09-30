@@ -6,8 +6,9 @@ import WizardController from "../../../src/components/ChallengeWizard/WizardCont
 import { Context } from "../../../src/components/ChallengeWizard/WizardStateMachine";
 import ContainerView from "../../../src/components/ContainerView";
 import { useAuth } from "../../../src/context/AuthProvider";
-import { Quest, QuestManager } from "../../../src/services/firestore/quests";
-import { saveUserWizardOutput } from "../../../src/services/firestore/wizard-output";
+import { Quest } from "../../../src/services/firestore/quests/quest.types";
+import { QuestManager } from "../../../src/services/firestore/quests/quests";
+import { WizardOutputManager } from "../../../src/services/firestore/wizardOutput/wizardOutput";
 import { OpenAIApi } from "../../../src/services/openai/gpt";
 
 export default function NewQuest() {
@@ -16,7 +17,8 @@ export default function NewQuest() {
   const [quests, setQuests] = useState<Quest[]>([]);
 
   const openAIApi = new OpenAIApi();
-  const questManager = new QuestManager(); // Create an instance of QuestManager
+  const questManager = new QuestManager();
+  const wizardOutputManager = new WizardOutputManager();
 
   const handleWizardCompletion = useCallback(
     async (context: Context) => {
@@ -27,7 +29,10 @@ export default function NewQuest() {
         }
 
         console.log("calling gpt");
-        const wizardOutput = await saveUserWizardOutput(context, user.uid);
+        const wizardOutput = await wizardOutputManager.saveUserWizardOutput(
+          context,
+          user.uid,
+        );
 
         console.log("wizardOutput", wizardOutput);
         const generatedQuests: Quest[] =

@@ -6,7 +6,7 @@ import { AuthProvider } from "../src/context/AuthProvider";
 import { OpenAIApiProvider } from "../src/context/OpenAIProvider";
 import { OpenAIApi } from "../src/services/openai/gpt";
 import { ThemeColors } from "../src/types/theme";
-import { adjustColor } from "../src/utils/color-helpers";
+import { adjustColor } from "../src/utils/colorHelpers";
 
 const openAIInstance = new OpenAIApi();
 
@@ -46,13 +46,14 @@ export const colors: ThemeColors = {
 
   lightText: "rgb(255, 255, 255)",
   darkText: nightColor,
+  darkBackground: nightColor,
 
   error: "rgb(186, 26, 26)",
   onError: "rgb(255, 255, 255)",
   errorContainer: "rgb(255, 218, 214)",
   onErrorContainer: "rgb(65, 0, 2)",
-  background: adjustColor("#C4A1FF", 60, "lighten"),
-  onBackground: adjustColor("#C4A1FF", 30, "lighten"),
+  background: "rgb(244, 221, 220)",
+  onBackground: "rgb(244, 221, 220)",
   surface: "rgb(255, 251, 255)",
   onSurface: nightColor,
   surfaceVariant: "rgb(244, 221, 220)",

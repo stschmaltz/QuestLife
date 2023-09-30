@@ -1,7 +1,8 @@
 import { User } from "firebase/auth";
 import { useState, useEffect } from "react";
 
-import { QuestPackage, QuestManager } from "../services/firestore/quests";
+import { QuestPackage } from "../services/firestore/quests/quest.types";
+import { QuestManager } from "../services/firestore/quests/quests";
 
 const questManager = new QuestManager();
 

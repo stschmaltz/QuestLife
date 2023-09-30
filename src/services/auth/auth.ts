@@ -9,7 +9,7 @@ import {
 
 import { UserObject } from "../../types/user";
 import { mapFirebaseError } from "../../utils/firebaseErrors";
-import { saveUser } from "../firestore/user";
+import { saveUser } from "../firestore/user/user";
 
 const auth = getAuth();
 

@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 
 import { Context } from "../../components/ChallengeWizard/WizardStateMachine";
-import { Quest } from "../firestore/quests";
+import { Quest } from "../firestore/quests/quests";
 
 interface IMessage {
   role: "system" | "user";

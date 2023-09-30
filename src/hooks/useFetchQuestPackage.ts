@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
-import { QuestManager, QuestPackage } from "../services/firestore/quests";
+import { QuestPackage } from "../services/firestore/quests/quest.types";
+import { QuestManager } from "../services/firestore/quests/quests";
 
 function useFetchQuest(id: string | undefined) {
   const [questPackage, setQuestPackage] = useState<QuestPackage | null>(null);

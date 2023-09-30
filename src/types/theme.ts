@@ -12,6 +12,8 @@ interface CustomColors {
 
   lightText: string;
   darkText: string;
+  darkBackground: string;
+
   backButton: string;
 }
 
