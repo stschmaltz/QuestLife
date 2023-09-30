@@ -8,6 +8,7 @@ interface AuthInputProps {
   value: string;
   onChangeText: (text: string) => void;
   secureText?: boolean;
+  inputMode?: "text" | "email";
 }
 
 export default function AuthInput({
@@ -15,11 +16,13 @@ export default function AuthInput({
   value,
   onChangeText,
   secureText = false,
+  inputMode = "text",
 }: AuthInputProps) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   return (
     <ThemedTextInput
+      inputMode={inputMode}
       label={label}
       value={value}
       onChangeText={onChangeText}

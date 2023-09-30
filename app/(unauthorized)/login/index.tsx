@@ -28,7 +28,12 @@ export default function LoginForm() {
 
   return (
     <ContainerView style={styles.container}>
-      <AuthInput label="Email" value={email} onChangeText={setEmail} />
+      <AuthInput
+        inputMode="email"
+        label="Email"
+        value={email}
+        onChangeText={setEmail}
+      />
       <AuthInput
         label="Password"
         value={password}
