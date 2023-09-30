@@ -7,11 +7,15 @@ import ContainerView from "../../../src/components/ContainerView";
 import LockedQuestView from "../../../src/components/Quest/QuestView/LockedQuestView";
 import QuestTitle from "../../../src/components/Quest/QuestView/QuestTitle";
 import QuestViewFooter from "../../../src/components/Quest/QuestView/QuestViewFooter";
+import CompletedQuestView from "../../../src/components/Quest/QuestView/UnlockedQuestView/CompletedQuestView";
 import UnlockedQuestView from "../../../src/components/Quest/QuestView/UnlockedQuestView/UnlockedQuestView";
 import { useAuth } from "../../../src/context/AuthProvider";
 import useFetchQuest from "../../../src/hooks/useFetchQuestPackage";
 import useQuestManager from "../../../src/hooks/useQuestManager";
-import { Quest } from "../../../src/services/firestore/quests/quest.types";
+import {
+  Quest,
+  QuestPackage,
+} from "../../../src/services/firestore/quests/quest.types";
 
 function LoadingView() {
   return <ActivityIndicator size="large" />;
@@ -45,11 +49,11 @@ export default function QuestPage() {
   const questPackage = updatedQuestPackage || initialQuestPackage;
 
   useEffect(() => {
-    const activeQuest = questPackage?.quests.find(
+    const activeQuest = initialQuestPackage?.quests.find(
       (quest: Quest) => quest.unlocked,
     );
     setViewingIndex(activeQuest?.initialIndex || 0);
-  }, [questPackage]);
+  }, [initialQuestPackage]);
 
   useEffect(() => {
     setViewedQuest(questPackage?.quests[viewingIndex]);
@@ -58,6 +62,42 @@ export default function QuestPage() {
   if (!user || loadingUser) {
     return null;
   }
+
+  const renderQuestView = (questPackage: QuestPackage, activeQuest: Quest) => {
+    if (activeQuest.completedOn) {
+      return (
+        <CompletedQuestView
+          quest={activeQuest}
+          submitUserFeedback={(viewedQuest) => {
+            console.log("submitUserFeedback", viewedQuest);
+          }}
+          uploadMemories={(viewedQuest) => {
+            console.log("uploadMemories", viewedQuest);
+          }}
+        />
+      );
+    }
+
+    if (activeQuest.unlocked) {
+      return (
+        <UnlockedQuestView
+          quest={activeQuest}
+          completeQuest={(viewedQuest) =>
+            handleComplete(viewedQuest.initialIndex)
+          }
+        />
+      );
+    }
+
+    return (
+      <LockedQuestView
+        quest={activeQuest}
+        unlockQuest={async () => {
+          await handleUnlock(activeQuest.initialIndex);
+        }}
+      />
+    );
+  };
 
   return (
     <ContainerView
@@ -78,21 +118,7 @@ export default function QuestPage() {
           <View style={{ flex: 1, width: "100%", maxHeight: 100 }}>
             <QuestTitle title={viewedQuest.challengeTitle} />
           </View>
-          {viewedQuest.unlocked ? (
-            <UnlockedQuestView
-              quest={viewedQuest}
-              completeQuest={(viewedQuest) =>
-                handleComplete(viewedQuest.initialIndex)
-              }
-            />
-          ) : (
-            <LockedQuestView
-              quest={viewedQuest}
-              unlockQuest={async () => {
-                await handleUnlock(viewedQuest.initialIndex);
-              }}
-            />
-          )}
+          {renderQuestView(questPackage, viewedQuest)}
         </View>
       )}
       {questPackage && (
