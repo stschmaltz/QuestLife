@@ -4,18 +4,16 @@ import { View } from "react-native";
 import { ActivityIndicator, Text } from "react-native-paper";
 
 import ContainerView from "../../../src/components/ContainerView";
+import CompletedQuestView from "../../../src/components/Quest/QuestView/CompletedQuestView";
+import { FeedbackModal } from "../../../src/components/Quest/QuestView/FeedbackModal";
 import LockedQuestView from "../../../src/components/Quest/QuestView/LockedQuestView";
 import QuestTitle from "../../../src/components/Quest/QuestView/QuestTitle";
 import QuestViewFooter from "../../../src/components/Quest/QuestView/QuestViewFooter";
-import CompletedQuestView from "../../../src/components/Quest/QuestView/UnlockedQuestView/CompletedQuestView";
-import UnlockedQuestView from "../../../src/components/Quest/QuestView/UnlockedQuestView/UnlockedQuestView";
+import UnlockedQuestView from "../../../src/components/Quest/QuestView/UnlockedQuestView";
 import { useAuth } from "../../../src/context/AuthProvider";
 import useFetchQuest from "../../../src/hooks/useFetchQuestPackage";
 import useQuestManager from "../../../src/hooks/useQuestManager";
-import {
-  Quest,
-  QuestPackage,
-} from "../../../src/services/firestore/quests/quest.types";
+import { Quest } from "../../../src/services/firestore/quests/quest.types";
 
 function LoadingView() {
   return <ActivityIndicator size="large" />;
@@ -33,6 +31,7 @@ export default function QuestPage() {
   const [viewedQuest, setViewedQuest] = useState<Quest | null | undefined>(
     null,
   );
+  const [isFeedbackModalVisible, setFeedbackModalVisible] = useState(false);
 
   const {
     questPackage: initialQuestPackage,
@@ -44,6 +43,7 @@ export default function QuestPage() {
     questPackage: updatedQuestPackage,
     unlockQuest: handleUnlock,
     completeQuest: handleComplete,
+    addUserFeedbackToQuest: handleAddUserFeedbackToQuest,
   } = useQuestManager(id);
 
   const questPackage = updatedQuestPackage || initialQuestPackage;
@@ -63,13 +63,13 @@ export default function QuestPage() {
     return null;
   }
 
-  const renderQuestView = (questPackage: QuestPackage, activeQuest: Quest) => {
+  const renderQuestView = (activeQuest: Quest) => {
     if (activeQuest.completedOn) {
       return (
         <CompletedQuestView
           quest={activeQuest}
           submitUserFeedback={(viewedQuest) => {
-            console.log("submitUserFeedback", viewedQuest);
+            setFeedbackModalVisible(true);
           }}
           uploadMemories={(viewedQuest) => {
             console.log("uploadMemories", viewedQuest);
@@ -82,9 +82,10 @@ export default function QuestPage() {
       return (
         <UnlockedQuestView
           quest={activeQuest}
-          completeQuest={(viewedQuest) =>
-            handleComplete(viewedQuest.initialIndex)
-          }
+          completeQuest={(viewedQuest) => {
+            handleComplete(viewedQuest.initialIndex);
+            setFeedbackModalVisible(true);
+          }}
         />
       );
     }
@@ -118,7 +119,20 @@ export default function QuestPage() {
           <View style={{ flex: 1, width: "100%", maxHeight: 100 }}>
             <QuestTitle title={viewedQuest.challengeTitle} />
           </View>
-          {renderQuestView(questPackage, viewedQuest)}
+          {renderQuestView(viewedQuest)}
+
+          <FeedbackModal
+            visible={isFeedbackModalVisible}
+            onDismiss={() => setFeedbackModalVisible(false)}
+            onSubmit={(rating, comment) => {
+              handleAddUserFeedbackToQuest(
+                viewedQuest?.initialIndex,
+                rating,
+                comment,
+              );
+              setFeedbackModalVisible(false);
+            }}
+          />
         </View>
       )}
       {questPackage && (

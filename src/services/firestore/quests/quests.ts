@@ -1,6 +1,11 @@
 import { Timestamp } from "firebase/firestore";
 
-import { CreateQuestPackage, Quest, QuestPackage } from "./quest.types";
+import {
+  CreateQuestPackage,
+  Quest,
+  QuestPackage,
+  UserRatingOptions,
+} from "./quest.types";
 import { QuestDatabase } from "./questDatabase";
 
 class QuestManager {
@@ -117,7 +122,7 @@ class QuestManager {
   async addUserFeedbackToQuest(
     questPackageId: string,
     questIndex: number,
-    userRating: 1 | 2 | 3 | 4 | 5,
+    userRating: UserRatingOptions,
     userComment: string,
   ): Promise<QuestPackage | null> {
     return this.updateQuest(questPackageId, questIndex, (quest) => ({

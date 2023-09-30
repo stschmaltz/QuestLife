@@ -1,9 +1,10 @@
 import { Timestamp } from "firebase/firestore";
 import React from "react";
 import { View } from "react-native";
-import { Card, IconButton, Text, useTheme } from "react-native-paper";
+import { Text, useTheme } from "react-native-paper";
 
-import { CustomTheme } from "../../../../types/theme";
+import { CustomTheme } from "../../../theme/theme.types";
+import ThemedCard from "../../themed/ThemedCard";
 
 interface Props {
   description: string;
@@ -29,32 +30,24 @@ const QuestDescription: React.FC<Props> = ({
         paddingVertical: 20,
       }}
     >
-      <Card
-        style={{
-          flex: 1,
-          width: "100%",
-          borderWidth: 2,
-        }}
-        contentStyle={{
-          width: "100%",
-          paddingVertical: 0,
-          flex: 1,
-        }}
-      >
+      <ThemedCard>
         {completedOn && (
           <View
             style={{
               alignItems: "center",
               position: "absolute",
-              top: 10,
+              borderTopRightRadius: 10,
+              borderTopLeftRadius: 10,
               width: "100%",
-              flexDirection: "row",
               justifyContent: "center",
               backgroundColor: colors.secondaryContainer,
-              paddingVertical: 15,
+              paddingVertical: 10,
             }}
           >
             <Text variant="headlineSmall">Quest Completed</Text>
+            <Text variant="bodyMedium" style={{ marginLeft: 10 }}>
+              {completedOn.toDate().toLocaleDateString()}
+            </Text>
           </View>
         )}
         <View
@@ -81,7 +74,7 @@ const QuestDescription: React.FC<Props> = ({
             </Text>
           </View>
         </View>
-      </Card>
+      </ThemedCard>
     </View>
   );
 };

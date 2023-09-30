@@ -4,7 +4,7 @@ import { View } from "react-native";
 import { useTheme } from "react-native-paper";
 
 import LogoutButton from "../../src/components/auth/LogoutButton";
-import { CustomTheme } from "../../src/types/theme";
+import { CustomTheme } from "../../src/theme/theme.types";
 
 export default function AuthorizedLayout() {
   const { colors } = useTheme<CustomTheme>();

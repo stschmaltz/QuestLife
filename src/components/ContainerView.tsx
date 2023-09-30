@@ -2,7 +2,7 @@ import React from "react";
 import { View, ViewProps } from "react-native";
 import { useTheme } from "react-native-paper";
 
-import { CustomTheme } from "../types/theme";
+import { CustomTheme } from "../theme/theme.types";
 
 const ContainerView: React.FC<ViewProps> = ({ style, ...restProps }) => {
   const { colors } = useTheme<CustomTheme>();

@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, ButtonProps, useTheme } from "react-native-paper";
 
-import { CustomTheme } from "../../types/theme";
+import { CustomTheme } from "../../theme/theme.types";
 
 const ThemedButton: React.FC<ButtonProps> = (props) => {
   const { colors } = useTheme<CustomTheme>();
@@ -12,7 +12,7 @@ const ThemedButton: React.FC<ButtonProps> = (props) => {
     mode === "contained"
       ? {
           borderWidth: 3,
-          borderColor: colors.outline,
+          borderColor: props.disabled ? colors.outlineVariant : colors.outline,
           shadowColor: colors.shadow,
           shadowOffset: { width: 2, height: 4 },
           shadowOpacity: 0.8,

@@ -30,10 +30,28 @@ function useQuestManager(questPackageId: string) {
     [questPackageId],
   );
 
+  const addUserFeedbackToQuest = useCallback(
+    async (
+      questIndex: number,
+      userRating: 1 | 2 | 3 | 4 | 5,
+      userComment: string,
+    ) => {
+      const updatedQuestPackage = await questManager.addUserFeedbackToQuest(
+        questPackageId,
+        questIndex,
+        userRating,
+        userComment,
+      );
+      setQuestPackage(updatedQuestPackage);
+    },
+    [questPackageId],
+  );
+
   return {
     questPackage,
     unlockQuest,
     completeQuest,
+    addUserFeedbackToQuest,
   };
 }
 

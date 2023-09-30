@@ -6,7 +6,7 @@ import { ActivityIndicator, useTheme } from "react-native-paper";
 import ThemedButton from "../../../src/components/themed/ThemedButton";
 import { useAuth } from "../../../src/context/AuthProvider";
 import { useRecentQuestPackages } from "../../../src/hooks/useRecentQuestPackages";
-import { CustomTheme } from "../../../src/types/theme";
+import { CustomTheme } from "../../../src/theme/theme.types";
 
 export default function Home() {
   const { user, loadingUser } = useAuth();

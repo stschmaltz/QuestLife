@@ -24,9 +24,19 @@ const ThemedCard: React.FC<
       {...props}
       style={[
         {
-          /* custom styles here */
+          flex: 1,
+          width: "100%",
+          borderWidth: 2,
         },
         props.style,
+      ]}
+      contentStyle={[
+        {
+          width: "100%",
+          paddingVertical: 0,
+          flex: 1,
+        },
+        props.contentStyle,
       ]}
     />
   );

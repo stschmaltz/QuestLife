@@ -1,11 +1,9 @@
 import React from "react";
 import { View } from "react-native";
-import { Text } from "react-native-paper";
 
-import QuestActionRow from "./QuestActionRow";
 import QuestDescription from "./QuestDescription";
-import { Quest } from "../../../../services/firestore/quests/quest.types";
-import ThemedButton from "../../../themed/ThemedButton";
+import { Quest } from "../../../services/firestore/quests/quest.types";
+import ThemedButton from "../../themed/ThemedButton";
 
 interface Props {
   quest: Quest;
@@ -42,15 +40,18 @@ const CompletedQuestView: React.FC<Props> = ({
           alignItems: "flex-end",
         }}
       >
-        <ThemedButton
-          mode="contained"
-          onPress={() => {
-            submitUserFeedback(quest);
-          }}
-          style={{}}
-        >
-          Quest Feedback
-        </ThemedButton>
+        {quest.userComment || quest.userRating ? null : (
+          <ThemedButton
+            mode="contained"
+            onPress={() => {
+              submitUserFeedback(quest);
+            }}
+            style={{}}
+          >
+            Quest Feedback
+          </ThemedButton>
+        )}
+
         <ThemedButton
           mode="contained"
           onPress={() => {

@@ -1,7 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 
-import QuestDescription from "./UnlockedQuestView/QuestDescription";
+import QuestDescription from "./QuestDescription";
 import { Quest } from "../../../services/firestore/quests/quest.types";
 import ThemedButton from "../../themed/ThemedButton";
 

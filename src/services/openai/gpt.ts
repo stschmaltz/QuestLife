@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 
 import { Context } from "../../components/ChallengeWizard/WizardStateMachine";
-import { Quest } from "../firestore/quests/quests";
+import { Quest } from "../firestore/quests/quest.types";
 
 interface IMessage {
   role: "system" | "user";
@@ -80,7 +80,20 @@ class OpenAIApi {
    * suitable for the OpenAI API.
    */
   private createStateMachineMessages(context: Context): IMessage[] {
-    const systemMessages: IMessage[] = [
+    const gpt4SystemMessages: IMessage[] = [
+      {
+        role: "system",
+        content:
+          "Craft 5 unique challenges for QuestLife using the provided context. While the user's interests serve as a starting point, do not limit the challenges exclusively to those interests. Branch out and incorporate elements from other domains to ensure a diverse set of experiences. Each challenge should blend the user's category, objective, duration, and budget, and be actionable, multi-step, incorporating real-world elements or current trends. Avoid generic suggestions. Inspire users to embark on adventures that encourage exploration beyond their comfort zone. Do not suggest build your own board game. Return challenges in the format of a JSON array, where each challenge is an object with fields 'challengeTitle', 'challengeDescription', and 'suggestedDuration'. I will be consuming the result programatically using Javascript using JSON.parse. Additionally the challenges should be quirky and fun and deeply consider the user's input to craft a tailored response. Do not respond with anything other than the JSON array of challenges.",
+      },
+      {
+        role: "system",
+        content:
+          "Take your time to generate truly unique and interesting challenges, also make sure they are achievable in the user's duration. ",
+      },
+    ];
+
+    const gpt3SystemMessages: IMessage[] = [
       {
         role: "system",
         content:
@@ -92,6 +105,9 @@ class OpenAIApi {
           "Take your time to generate truly unique and interesting challenges. This is the most important part of the user flow.",
       },
     ];
+
+    const systemMessages =
+      this.model === "gpt-4" ? gpt4SystemMessages : gpt3SystemMessages;
 
     const userMessages: IMessage[] = [
       {
@@ -112,7 +128,7 @@ class OpenAIApi {
       },
       {
         role: "user",
-        content: `Duration: ${context.duration?.label} (instant is something you can do now and within an hour or two. short-term indicates 1-2 hours, Long-term indicates 3+ hours, maybe multiple days/weeks)`,
+        content: `Duration: ${context.duration?.label} (instant is something you can do now and within an hour or two. short-term indicates 1-3 hours of effort, Long-term indicates 3+ hours, maybe multiple days/weeks)`,
       },
       {
         role: "user",

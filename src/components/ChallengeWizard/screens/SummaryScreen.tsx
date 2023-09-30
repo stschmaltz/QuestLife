@@ -2,7 +2,7 @@ import React from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
 import { Text, useTheme, Card, Divider } from "react-native-paper";
 
-import { CustomTheme } from "../../../types/theme";
+import { CustomTheme } from "../../../theme/theme.types";
 import { Context } from "../WizardStateMachine";
 import ScreenButton from "../components/ScreenButton";
 import ScreenContainer from "../components/ScreenContainer";

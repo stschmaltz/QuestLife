@@ -2,8 +2,8 @@ import React from "react";
 import { View } from "react-native";
 
 import QuestDescription from "./QuestDescription";
-import { Quest } from "../../../../services/firestore/quests/quest.types";
-import ThemedButton from "../../../themed/ThemedButton";
+import { Quest } from "../../../services/firestore/quests/quest.types";
+import ThemedButton from "../../themed/ThemedButton";
 
 interface Props {
   quest: Quest;

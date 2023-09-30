@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { useTheme } from "react-native-paper";
 
 import ScreenButton from "./ScreenButton";
-import { CustomTheme } from "../../../types/theme";
+import { CustomTheme } from "../../../theme/theme.types";
 
 interface Props {
   backgroundColor: string;

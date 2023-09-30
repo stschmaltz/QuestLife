@@ -1,10 +1,12 @@
 import { Timestamp } from "firebase/firestore";
 
+export type UserRatingOptions = 1 | 2 | 3 | 4 | 5;
+
 export interface Quest {
   challengeTitle: string;
   challengeDescription: string;
   suggestedDuration: string;
-  userRating?: 1 | 2 | 3 | 4 | 5;
+  userRating?: UserRatingOptions;
   userComment?: string;
   completedOn?: Timestamp;
   unlocked?: boolean;
