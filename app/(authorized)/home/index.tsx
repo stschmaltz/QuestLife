@@ -39,13 +39,13 @@ export default function Home() {
           Generate a new set of quests!
         </ThemedButton>
 
-        {/* render buttons that link to the most quests */}
         {questsError && <Text>Error loading quests</Text>}
         {questsLoading ? (
           <ActivityIndicator size="large" animating={questsLoading} />
         ) : (
           recentQuests.map((quest) => (
             <ThemedButton
+              style={{ margin: 10, backgroundColor: colors.tertiary }}
               key={quest.id}
               mode="contained"
               onPress={() => router.push(`/quest/${quest.id}`)}
@@ -53,6 +53,16 @@ export default function Home() {
               {quest.quests[0]?.challengeTitle || "No Quests"}
             </ThemedButton>
           ))
+        )}
+        {recentQuests.length > 0 && (
+          <ThemedButton
+            style={{ margin: 10, backgroundColor: colors.quaternary }}
+            key={recentQuests[0].id}
+            mode="contained"
+            onPress={() => router.push(`/quest-package/${recentQuests[0].id}`)}
+          >
+            {recentQuests[0].title}
+          </ThemedButton>
         )}
       </View>
     </View>

@@ -28,16 +28,13 @@ export default function NewQuest() {
           throw new Error("No user ID found");
         }
 
-        console.log("calling gpt");
         const wizardOutput = await wizardOutputManager.saveUserWizardOutput(
           context,
           user.uid,
         );
 
-        console.log("wizardOutput", wizardOutput);
         const generatedQuests: Quest[] =
           await openAIApi.sendPromptWithContext(context);
-        console.log("generatedQuests", generatedQuests);
 
         await questManager.saveGeneratedQuests({
           uid: wizardOutput.uid,

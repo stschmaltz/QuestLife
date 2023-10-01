@@ -30,7 +30,15 @@ const QuestDescription: React.FC<Props> = ({
         paddingVertical: 20,
       }}
     >
-      <ThemedCard>
+      <ThemedCard
+        style={{
+          flex: 1,
+          width: "100%",
+        }}
+        contentStyle={{
+          flex: 1,
+        }}
+      >
         {completedOn && (
           <View
             style={{

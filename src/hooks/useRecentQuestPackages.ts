@@ -22,12 +22,10 @@ export const useRecentQuestPackages = (
 
     const fetchQuests = async () => {
       try {
-        console.log("Fetching recent quests for user", userId);
         const recentQuests: QuestPackage[] = await questManager.getRecentQuests(
           userId,
           count,
         );
-        console.log("Recent quests:", recentQuests);
         setQuests(recentQuests);
       } catch (err: unknown) {
         if (err instanceof Error) setError(err);

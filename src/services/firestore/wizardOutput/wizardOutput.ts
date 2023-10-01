@@ -11,8 +11,6 @@ class WizardOutputManager {
     wizardContext: Context,
     uid: string,
   ): Promise<WizardOutput> {
-    console.log("wizardContext", wizardContext, "uid", uid);
-
     const newContextDocId = this.db.generateId();
     const newOutput: WizardOutput = {
       id: newContextDocId,
@@ -30,6 +28,10 @@ class WizardOutputManager {
     await this.db.save(newOutput);
 
     return newOutput;
+  }
+
+  async findById(id: string): Promise<WizardOutput | null> {
+    return this.db.findById(id);
   }
 }
 

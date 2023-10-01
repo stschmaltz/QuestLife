@@ -28,7 +28,6 @@ abstract class FirestoreDatabase<T extends { [x: string]: any }> {
     const document = await getDoc(doc(this.ref, id));
 
     if (!document.exists()) {
-      console.log("Document does not exist");
       return null;
     }
 
@@ -44,6 +43,11 @@ abstract class FirestoreDatabase<T extends { [x: string]: any }> {
 
     const result = await getDocs(queryRef);
     return result.docs.map((doc) => doc.data() as T);
+  }
+
+  async findOneByField(fieldName: string, value: any): Promise<T | null> {
+    const result = await this.findByField(fieldName, value, 1);
+    return result[0] || null;
   }
 
   async update(id: string, data: T): Promise<void> {

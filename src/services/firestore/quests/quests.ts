@@ -12,8 +12,6 @@ class QuestManager {
   private db = new QuestDatabase();
 
   async saveGeneratedQuests(data: CreateQuestPackage): Promise<QuestPackage> {
-    console.log("quests", data.quests, "uid", data.uid);
-
     if (!data.quests?.length) {
       throw new Error("No quests generated");
     }
@@ -81,8 +79,6 @@ class QuestManager {
     questPackageId: string,
     questIndex: number,
   ): Promise<QuestPackage> {
-    console.log("unlocking quest", questIndex);
-
     const quest = await this.updateQuest(
       questPackageId,
       questIndex,

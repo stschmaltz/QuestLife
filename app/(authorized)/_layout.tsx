@@ -57,6 +57,10 @@ export default function AuthorizedLayout() {
           name="quest/[id]"
           options={{ title: "Quest", href: null }}
         />
+        <Tabs.Screen
+          name="quest-package/[id]"
+          options={{ title: "Quest Package", href: null }}
+        />
       </Tabs>
     </View>
   );

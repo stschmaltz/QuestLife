@@ -61,7 +61,6 @@ class OpenAIApi {
         },
       );
 
-      console.log("RESPONSE", response.data.choices[0].message.content);
       const result = response.data.choices.map(
         (choice) => choice.message.content,
       )[0];
