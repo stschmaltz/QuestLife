@@ -43,7 +43,7 @@ const colors: ThemeColors = {
   onError: "rgb(255, 255, 255)",
   errorContainer: "rgb(255, 218, 214)",
   onErrorContainer: "rgb(65, 0, 2)",
-  background: "rgb(244, 221, 220)",
+  background: adjustColor(quaternaryColor, 70, "lighten"),
   onBackground: "rgb(244, 221, 220)",
   surface: "rgb(255, 251, 255)",
   onSurface: nightColor,
