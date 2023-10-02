@@ -49,11 +49,16 @@ export default function QuestPage() {
   const questPackage = updatedQuestPackage || initialQuestPackage;
 
   useEffect(() => {
-    const activeQuest = initialQuestPackage?.quests.find(
-      (quest: Quest) => quest.unlocked,
+    const activeQuest = questPackage?.quests.find(
+      (quest: Quest) => quest.unlocked && !quest.completedOn,
     );
-    setViewingIndex(activeQuest?.initialIndex || 0);
-  }, [initialQuestPackage]);
+
+    if (params?.index) {
+      setViewingIndex(Number(params.index));
+    } else {
+      setViewingIndex(activeQuest?.initialIndex ?? 0);
+    }
+  }, [questPackage, params?.index]);
 
   useEffect(() => {
     setViewedQuest(questPackage?.quests[viewingIndex]);

@@ -1,6 +1,6 @@
 import React from "react";
-import { View, Text } from "react-native";
-import { Modal, TextInput, Portal, useTheme } from "react-native-paper";
+import { View } from "react-native";
+import { TextInput, useTheme } from "react-native-paper";
 
 import { UserRatingOptions } from "../../../services/firestore/quests/quest.types";
 import { CustomTheme } from "../../../theme/theme.types";

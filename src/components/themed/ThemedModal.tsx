@@ -1,12 +1,6 @@
 import React from "react";
-import { View, Text } from "react-native";
-import {
-  Modal,
-  TextInput,
-  Portal,
-  useTheme,
-  ModalProps,
-} from "react-native-paper";
+import { Text } from "react-native";
+import { Modal, Portal, useTheme, ModalProps } from "react-native-paper";
 
 import ThemedButton from "./ThemedButton";
 import { CustomTheme } from "../../theme/theme.types";
