@@ -41,6 +41,7 @@ export default function NewQuest() {
           wizardContextId: wizardOutput.id,
           quests: generatedQuests,
         });
+
         setQuests(generatedQuests);
       } catch (error: any) {
         console.error("Error handling wizard completion:", error);

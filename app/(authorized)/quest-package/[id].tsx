@@ -1,5 +1,5 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import {
   ActivityIndicator,
@@ -12,8 +12,10 @@ import ContainerView from "../../../src/components/ContainerView";
 import ThemedButton from "../../../src/components/themed/ThemedButton";
 import ThemedCard from "../../../src/components/themed/ThemedCard";
 import { useAuth } from "../../../src/context/AuthProvider";
+import { useQuestPackage } from "../../../src/context/QuestPackageContext";
 import useFetchQuest from "../../../src/hooks/useFetchQuestPackage";
 import useFetchWizardOutput from "../../../src/hooks/useFetchWizardOutput";
+import { Quest } from "../../../src/services/firestore/quests/quest.types";
 import { CustomTheme } from "../../../src/theme/theme.types";
 function LoadingView() {
   return <ActivityIndicator size="large" />;
@@ -29,9 +31,11 @@ export default function QuestPackagePage() {
   const id = params.id as string;
   const { user, loadingUser } = useAuth();
   const router = useRouter();
+  const { questPackage, setQuestPackage } = useQuestPackage();
+  const [activeQuest, setActiveQuest] = useState<Quest | null | undefined>();
 
   const {
-    questPackage,
+    questPackage: fetchedQuestPackage,
     error: fetchQuestError,
     loading: loadingQuest,
   } = useFetchQuest(id);
@@ -42,13 +46,21 @@ export default function QuestPackagePage() {
     loading: wizardOutputLoading,
   } = useFetchWizardOutput(questPackage?.wizardContextId);
 
+  useEffect(() => {
+    setQuestPackage(fetchedQuestPackage);
+  }, [fetchedQuestPackage]);
+
+  useEffect(() => {
+    const activeQuest = questPackage?.quests.find(
+      (quest) => quest.unlocked && !quest.completedOn,
+    );
+    setActiveQuest(activeQuest);
+  }, [questPackage]);
+
   if (loadingUser || !user || wizardOutputLoading) {
     return <LoadingView />;
   }
 
-  const activeQuest = questPackage?.quests.find(
-    (quest) => quest.unlocked && !quest.completedOn,
-  );
   const completedQuests = questPackage?.quests
     ? questPackage.quests.filter((quest) => !!quest.completedOn)
     : [];

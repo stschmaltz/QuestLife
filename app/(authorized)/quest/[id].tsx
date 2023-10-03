@@ -11,6 +11,7 @@ import QuestTitle from "../../../src/components/Quest/QuestView/QuestTitle";
 import QuestViewFooter from "../../../src/components/Quest/QuestView/QuestViewFooter";
 import UnlockedQuestView from "../../../src/components/Quest/QuestView/UnlockedQuestView";
 import { useAuth } from "../../../src/context/AuthProvider";
+import { useQuestPackage } from "../../../src/context/QuestPackageContext";
 import useFetchQuest from "../../../src/hooks/useFetchQuestPackage";
 import useQuestManager from "../../../src/hooks/useQuestManager";
 import { Quest } from "../../../src/services/firestore/quests/quest.types";
@@ -26,12 +27,14 @@ function ErrorView() {
 export default function QuestPage() {
   const params = useLocalSearchParams();
   const id = params.id as string;
+  const [initialParamsIndex] = useState(params.index);
   const { user, loadingUser } = useAuth();
   const [viewingIndex, setViewingIndex] = useState(0);
   const [viewedQuest, setViewedQuest] = useState<Quest | null | undefined>(
     null,
   );
   const [isFeedbackModalVisible, setFeedbackModalVisible] = useState(false);
+  const { questPackage, setQuestPackage } = useQuestPackage();
 
   const {
     questPackage: initialQuestPackage,
@@ -46,19 +49,21 @@ export default function QuestPage() {
     addUserFeedbackToQuest: handleAddUserFeedbackToQuest,
   } = useQuestManager(id);
 
-  const questPackage = updatedQuestPackage || initialQuestPackage;
+  useEffect(() => {
+    setQuestPackage(updatedQuestPackage || initialQuestPackage);
+  }, [initialQuestPackage, updatedQuestPackage]);
 
   useEffect(() => {
-    const activeQuest = questPackage?.quests.find(
-      (quest: Quest) => quest.unlocked && !quest.completedOn,
-    );
-
-    if (params?.index) {
-      setViewingIndex(Number(params.index));
+    if (initialParamsIndex) {
+      setViewingIndex(Number(initialParamsIndex));
     } else {
+      const activeQuest = questPackage?.quests.find(
+        (quest: Quest) => quest.unlocked && !quest.completedOn,
+      );
+
       setViewingIndex(activeQuest?.initialIndex ?? 0);
     }
-  }, [questPackage, params?.index]);
+  }, [questPackage, initialParamsIndex]);
 
   useEffect(() => {
     setViewedQuest(questPackage?.quests[viewingIndex]);
