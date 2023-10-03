@@ -6,17 +6,19 @@ import WizardController from "../../../src/components/ChallengeWizard/WizardCont
 import { Context } from "../../../src/components/ChallengeWizard/WizardStateMachine";
 import ContainerView from "../../../src/components/ContainerView";
 import { useAuth } from "../../../src/context/AuthProvider";
-import { Quest } from "../../../src/services/firestore/quests/quest.types";
+import {
+  QuestGeneratorProvider,
+  useQuestGenerator,
+} from "../../../src/context/QuestGeneratorProvider";
 import { QuestManager } from "../../../src/services/firestore/quests/quests";
 import { WizardOutputManager } from "../../../src/services/firestore/wizardOutput/wizardOutput";
-import { OpenAIApi } from "../../../src/services/openai/gpt";
 
 export default function NewQuest() {
   const [isLoading, setIsLoading] = useState(false);
   const { user, loadingUser } = useAuth();
-  const [quests, setQuests] = useState<Quest[]>([]);
+  const { generatedQuests, loadingQuests, generateQuests } =
+    useQuestGenerator();
 
-  const openAIApi = new OpenAIApi();
   const questManager = new QuestManager();
   const wizardOutputManager = new WizardOutputManager();
 
@@ -33,16 +35,7 @@ export default function NewQuest() {
           user.uid,
         );
 
-        const generatedQuests: Quest[] =
-          await openAIApi.sendPromptWithContext(context);
-
-        await questManager.saveGeneratedQuests({
-          uid: wizardOutput.uid,
-          wizardContextId: wizardOutput.id,
-          quests: generatedQuests,
-        });
-
-        setQuests(generatedQuests);
+        await generateQuests(context, wizardOutput.uid, wizardOutput.id);
       } catch (error: any) {
         console.error("Error handling wizard completion:", error);
 
@@ -54,7 +47,7 @@ export default function NewQuest() {
         setIsLoading(false);
       }
     },
-    [setQuests, openAIApi, questManager],
+    [questManager],
   );
 
   // Render function for loading state
@@ -64,7 +57,7 @@ export default function NewQuest() {
   const renderQuests = () => (
     <Card style={{ overflow: "scroll" }}>
       <ScrollView>
-        {quests?.map((quest, index) => (
+        {generatedQuests?.map((quest, index) => (
           <>
             <Card.Title title={quest.challengeTitle} key={index} />
             <Card.Content>
@@ -78,14 +71,16 @@ export default function NewQuest() {
   );
 
   return (
-    <ContainerView style={{ alignItems: "center" }}>
-      {isLoading || loadingUser ? (
-        renderLoading()
-      ) : quests?.length === 0 ? (
-        <WizardController onComplete={handleWizardCompletion} />
-      ) : (
-        renderQuests()
-      )}
-    </ContainerView>
+    <QuestGeneratorProvider>
+      <ContainerView style={{ alignItems: "center" }}>
+        {isLoading || loadingUser || loadingQuests ? (
+          renderLoading()
+        ) : generatedQuests?.length === 0 ? (
+          <WizardController onComplete={handleWizardCompletion} />
+        ) : (
+          renderQuests()
+        )}
+      </ContainerView>
+    </QuestGeneratorProvider>
   );
 }

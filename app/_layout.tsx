@@ -3,11 +3,11 @@ import React from "react";
 import { Provider, MD3LightTheme as DefaultTheme } from "react-native-paper";
 
 import { AuthProvider } from "../src/context/AuthProvider";
-import { OpenAIApiProvider } from "../src/context/OpenAIProvider";
-import { OpenAIApi } from "../src/services/openai/gpt";
+import { QuestGeneratorProvider } from "../src/context/QuestGeneratorProvider";
+import { QuestGenerator } from "../src/services/openai/gpt";
 import { colors } from "../src/theme/theme";
 
-const openAIInstance = new OpenAIApi();
+const openAIInstance = new QuestGenerator();
 
 export default function RootLayout() {
   const theme = {
@@ -21,7 +21,7 @@ export default function RootLayout() {
   return (
     <Provider theme={theme}>
       <AuthProvider>
-        <OpenAIApiProvider openAIApi={openAIInstance}>
+        <QuestGeneratorProvider QuestGenerator={openAIInstance}>
           <Stack>
             <Stack.Screen
               name="(authorized)"
@@ -38,7 +38,7 @@ export default function RootLayout() {
               }}
             />
           </Stack>
-        </OpenAIApiProvider>
+        </QuestGeneratorProvider>
       </AuthProvider>
     </Provider>
   );

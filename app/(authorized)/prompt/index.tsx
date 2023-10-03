@@ -5,7 +5,7 @@ import { Context } from "../../../src/components/ChallengeWizard/WizardStateMach
 import ContainerView from "../../../src/components/ContainerView";
 import ThemedButton from "../../../src/components/themed/ThemedButton";
 import { useAuth } from "../../../src/context/AuthProvider";
-import { useOpenAI } from "../../../src/context/OpenAIProvider";
+import { useQuestGenerator } from "../../../src/context/QuestGeneratorProvider";
 import { Quest } from "../../../src/services/firestore/quests/quest.types";
 
 export default function Home() {
@@ -13,7 +13,7 @@ export default function Home() {
 
   const [isLoadingPrompt, setIsLoadingPrompt] = React.useState(false);
   const [prompt, setPrompt] = React.useState<Quest[]>([]);
-  const openAI = useOpenAI();
+  const { generateQuests } = useQuestGenerator();
 
   const sampleContext: Context = {
     category: {
@@ -57,8 +57,12 @@ export default function Home() {
         onPress={async () => {
           setIsLoadingPrompt(true);
           setPrompt([]);
-          const responses = openAI
-            ? await openAI?.sendPromptWithContext(sampleContext)
+          const responses = generateQuests
+            ? await generateQuests(
+                sampleContext,
+                user.uid,
+                "ManualWizardOutputId",
+              )
             : [];
           setPrompt(responses);
           setIsLoadingPrompt(false);
