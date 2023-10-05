@@ -3,6 +3,8 @@ import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { ActivityIndicator, useTheme } from "react-native-paper";
 
+import ContainerView from "../../../src/components/ContainerView";
+import ActiveQuestPackages from "../../../src/components/home/ActiveQuestPackages";
 import ThemedButton from "../../../src/components/themed/ThemedButton";
 import { useAuth } from "../../../src/context/AuthProvider";
 import { useRecentQuestPackages } from "../../../src/hooks/useRecentQuestPackages";
@@ -23,36 +25,23 @@ export default function Home() {
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <View style={{ height: 100, justifyContent: "flex-end" }}>
-        <Text>
-          {user
-            ? `User is signed in as ${user?.email}`
-            : "User is not signed in"}
-        </Text>
-      </View>
-      <View style={{ height: 400, justifyContent: "center" }}>
+    <ContainerView>
+      <View style={{ alignItems: "center", marginTop: 50 }}>
         <ThemedButton
           mode="contained"
+          style={{ margin: 10, backgroundColor: colors.primary }}
           onPress={() => router.push("/new-quest")}
         >
           Generate a new set of quests!
         </ThemedButton>
+      </View>
 
+      <View style={{ flex: 1, width: "100%" }}>
         {questsError && <Text>Error loading quests</Text>}
         {questsLoading ? (
           <ActivityIndicator size="large" animating={questsLoading} />
         ) : (
-          recentQuests.map((quest) => (
-            <ThemedButton
-              style={{ margin: 10, backgroundColor: colors.tertiary }}
-              key={quest.id}
-              mode="contained"
-              onPress={() => router.push(`/quest/${quest.id}`)}
-            >
-              {quest.quests[0]?.challengeTitle || "No Quests"}
-            </ThemedButton>
-          ))
+          <ActiveQuestPackages activeQuestPackages={recentQuests} />
         )}
         {recentQuests.length > 0 && (
           <ThemedButton
@@ -65,7 +54,7 @@ export default function Home() {
           </ThemedButton>
         )}
       </View>
-    </View>
+    </ContainerView>
   );
 }
 
