@@ -1,11 +1,9 @@
 import { useRouter } from "expo-router";
 import React from "react";
-import { View } from "react-native";
-import { Text, useTheme } from "react-native-paper";
+import { ScrollView, View } from "react-native";
+import { Text } from "react-native-paper";
 
 import { QuestPackage } from "../../services/firestore/quests/quest.types";
-import { CustomTheme } from "../../theme/theme.types";
-import ThemedButton from "../themed/ThemedButton";
 import ThemedCard from "../themed/ThemedCard";
 
 interface Props {
@@ -13,20 +11,34 @@ interface Props {
 }
 
 const ActiveQuestPackages: React.FC<Props> = ({ activeQuestPackages }) => {
-  const { colors } = useTheme<CustomTheme>();
   const router = useRouter();
 
   return (
     <View
       style={{
-        width: "90%",
-        backgroundColor: colors.error,
-        overflow: "scroll",
+        width: "100%",
       }}
     >
-      <Text variant="headlineMedium">Active Quest Packages</Text>
-      <View style={{ flexDirection: "row" }}>
-        {activeQuestPackages.map((questPackage: QuestPackage) => (
+      <View
+        style={{
+          padding: 20,
+          paddingBottom: 0,
+          backgroundColor: "inherit",
+        }}
+      >
+        <Text variant="headlineMedium" style={{ fontWeight: "bold" }}>
+          Active Quest Packages
+        </Text>
+      </View>
+      <ScrollView
+        horizontal
+        style={{
+          padding: 10,
+          paddingBottom: 20,
+          backgroundColor: "inherit",
+        }}
+      >
+        {activeQuestPackages.map((questPackage: QuestPackage, index) => (
           <ThemedCard
             key={questPackage.id}
             style={{
@@ -36,15 +48,19 @@ const ActiveQuestPackages: React.FC<Props> = ({ activeQuestPackages }) => {
               height: 150,
               marginVertical: 10,
               marginHorizontal: 10,
+              marginRight: index === activeQuestPackages.length - 1 ? 30 : 10,
             }}
-            onPress={() => router.push(`/questPackage/${questPackage.id}`)}
+            onPress={() => router.push(`/quest-package/${questPackage.id}`)}
           >
             <Text variant="bodyLarge">
               {questPackage.quests[0]?.challengeTitle || "No Quests"}
             </Text>
+            <Text variant="bodySmall">
+              {questPackage.quests[0].suggestedDuration}
+            </Text>
           </ThemedCard>
         ))}
-      </View>
+      </ScrollView>
     </View>
   );
 };
