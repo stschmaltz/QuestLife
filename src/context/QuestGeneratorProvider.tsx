@@ -18,7 +18,7 @@ type QuestGeneratorContextType = {
 
 const QuestGeneratorContext = React.createContext<QuestGeneratorContextType>({
   generateQuests: async () => [],
-  loadingQuests: true,
+  loadingQuests: false,
   generatedQuests: [],
 });
 
@@ -30,7 +30,7 @@ export function QuestGeneratorProvider({
 }: {
   children: JSX.Element;
 }) {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const { user } = useAuth();
   const [quests, setQuests] = useState<Quest[]>([]);
   const questManager = new QuestManager();

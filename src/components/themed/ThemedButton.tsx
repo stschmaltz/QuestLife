@@ -25,8 +25,8 @@ const ThemedButton: React.FC<ButtonProps> = (props) => {
 
   return (
     <Button
-      textColor={textColor}
       labelStyle={{ fontWeight: "bold" }}
+      textColor={textColor}
       {...props}
       style={[customTheme, props.style]}
     />

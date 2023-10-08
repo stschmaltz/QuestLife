@@ -6,7 +6,6 @@ import { ActivityIndicator, useTheme, Text } from "react-native-paper";
 import ContainerView from "../../../src/components/ContainerView";
 import ActiveQuestPackages from "../../../src/components/home/ActiveQuestPackages";
 import GenerateNewQuestsSection from "../../../src/components/home/GenerateNewQuestsSection";
-import ThemedButton from "../../../src/components/themed/ThemedButton";
 import { useAuth } from "../../../src/context/AuthProvider";
 import { useRecentQuestPackages } from "../../../src/hooks/useRecentQuestPackages";
 import { CustomTheme } from "../../../src/theme/theme.types";

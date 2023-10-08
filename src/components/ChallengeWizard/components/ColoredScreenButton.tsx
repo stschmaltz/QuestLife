@@ -39,8 +39,10 @@ const ColoredScreenButton: React.FC<ColoredButtonProps> = ({
             ? adjustColor(backgroundColor, 40, "lighten")
             : backgroundColor,
         },
+
         style,
       ]}
+      textColor={toggled ? colors.outlineVariant : colors.darkText}
       onPress={onPress}
     >
       {children}

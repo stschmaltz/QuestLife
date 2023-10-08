@@ -11,6 +11,7 @@ const ScreenButton: React.FC<ButtonProps> = ({
   return (
     <ThemedButton
       mode="contained"
+      {...props}
       onPress={onPress}
       style={[
         {

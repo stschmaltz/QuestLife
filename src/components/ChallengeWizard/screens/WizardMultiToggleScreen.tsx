@@ -59,7 +59,6 @@ const WizardMultiToggleScreen: React.FC<Props> = ({
               toggled={selectedOptions.some(
                 (selectedOption) => selectedOption.value === option.value,
               )}
-              style={{}}
             >
               {option.label}
             </ColoredScreenButton>
