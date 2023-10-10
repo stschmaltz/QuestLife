@@ -38,12 +38,16 @@ class QuestManager {
     return newDoc;
   }
 
-  async getRecentQuests(userId: string, x: number): Promise<QuestPackage[]> {
-    return this.db.getRecent(userId, x);
+  async getAllQuestPackages(userId: string): Promise<QuestPackage[]> {
+    return this.db.findAllByUserId(userId);
   }
 
   async findById(id: string): Promise<QuestPackage | null> {
     return this.db.findById(id);
+  }
+
+  async findAllByUserId(userId: string): Promise<QuestPackage[]> {
+    return this.db.findAllByUserId(userId);
   }
 
   async updateQuest(

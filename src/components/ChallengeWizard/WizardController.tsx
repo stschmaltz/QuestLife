@@ -1,6 +1,6 @@
 import { useMachine } from "@xstate/react";
 import { useRouter } from "expo-router";
-import React from "react";
+import React, { useEffect } from "react";
 
 import {
   budgets,
@@ -50,6 +50,14 @@ const WizardController: React.FC<Props> = ({ onComplete }) => {
   const handleDoneSelectingInterests = () => {
     send("DONE_SELECTING_INTERESTS");
   };
+
+  useEffect(() => {
+    console.log("yeehaw", state.matches("completed"));
+    if (state.matches("completed")) {
+      console.log("giddy-up");
+      send("RESET");
+    }
+  }, [state, send]);
 
   return (
     <ContainerView style={{ width: "100%" }}>

@@ -75,10 +75,8 @@ export default function NewQuest() {
       <ContainerView style={{ alignItems: "center" }}>
         {isLoading || loadingUser || loadingQuests ? (
           renderLoading()
-        ) : generatedQuests?.length === 0 ? (
-          <WizardController onComplete={handleWizardCompletion} />
         ) : (
-          renderQuests()
+          <WizardController onComplete={handleWizardCompletion} />
         )}
       </ContainerView>
     </QuestGeneratorProvider>

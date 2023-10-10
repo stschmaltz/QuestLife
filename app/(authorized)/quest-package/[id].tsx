@@ -196,7 +196,7 @@ export default function QuestPackagePage() {
               onPress={() =>
                 router.push(
                   `/quest/${questPackage.id}?index=${
-                    completedQuests[0].initialIndex ?? 0
+                    completedQuests[0]?.initialIndex ?? 0
                   }`,
                 )
               }

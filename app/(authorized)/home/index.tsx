@@ -1,28 +1,39 @@
-import { useRouter } from "expo-router";
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { ActivityIndicator, useTheme, Text } from "react-native-paper";
 
 import ContainerView from "../../../src/components/ContainerView";
 import ActiveQuestPackages from "../../../src/components/home/ActiveQuestPackages";
+import CompletedQuestPackages from "../../../src/components/home/CompletedQuestPackages";
 import GenerateNewQuestsSection from "../../../src/components/home/GenerateNewQuestsSection";
 import { useAuth } from "../../../src/context/AuthProvider";
-import { useRecentQuestPackages } from "../../../src/hooks/useRecentQuestPackages";
+import { useFetchAllQuestPackages } from "../../../src/hooks/useFetchQuestPackages";
 import { CustomTheme } from "../../../src/theme/theme.types";
 
 export default function Home() {
   const { user, loadingUser } = useAuth();
 
-  const [recentQuests, questsLoading, questsError] = useRecentQuestPackages(
-    user,
-    3,
-  );
+  const [allQuestPackages, questPackagesLoading, fetchAllQuestPackagesError] =
+    useFetchAllQuestPackages(user);
 
   const { colors } = useTheme<CustomTheme>();
   if (!user || loadingUser) {
     return <ActivityIndicator size="large" animating={loadingUser} />;
   }
 
+  const activeQuestPackages = allQuestPackages.filter((questPackage) =>
+    questPackage.quests.every((quest) => !quest.completedOn),
+  );
+  const completedQuestPackages = allQuestPackages.filter((questPackage) =>
+    questPackage.quests.every((quest) => quest.completedOn),
+  );
+
+  console.log(
+    "allQuestPackages",
+    allQuestPackages,
+    fetchAllQuestPackagesError,
+    questPackagesLoading,
+  );
   return (
     <ContainerView style={{ justifyContent: "flex-start" }}>
       <View
@@ -36,9 +47,9 @@ export default function Home() {
       </View>
 
       <View style={{ width: "100%" }}>
-        {questsError && <Text>Error loading quests</Text>}
-        {questsLoading ? (
-          <ActivityIndicator size="large" animating={questsLoading} />
+        {fetchAllQuestPackagesError && <Text>Error loading quests</Text>}
+        {questPackagesLoading ? (
+          <ActivityIndicator size="large" animating={questPackagesLoading} />
         ) : (
           <View
             style={{
@@ -46,46 +57,31 @@ export default function Home() {
               borderTopWidth: 1,
               borderBottomWidth: 1,
               backgroundColor: colors.primaryContainer,
+              minHeight: 200,
             }}
           >
-            <ActiveQuestPackages activeQuestPackages={recentQuests} />
+            <ActiveQuestPackages questPackages={activeQuestPackages} />
           </View>
         )}
       </View>
-      <View
-        style={{
-          width: "100%",
-          borderBottomWidth: 1,
-          backgroundColor: colors.tertiaryContainer,
-        }}
-      >
-        <View
-          style={{
-            width: "100%",
-            paddingVertical: 30,
-          }}
-        >
+      <View style={{ height: 10 }} />
+      <View style={{ width: "100%" }}>
+        {fetchAllQuestPackagesError && <Text>Error loading quests</Text>}
+        {questPackagesLoading ? (
+          <ActivityIndicator size="large" animating={questPackagesLoading} />
+        ) : (
           <View
             style={{
-              padding: 20,
-              paddingBottom: 0,
-              backgroundColor: "inherit",
+              width: "100%",
+              borderTopWidth: 1,
+              borderBottomWidth: 1,
+              backgroundColor: colors.tertiaryContainer,
+              minHeight: 200,
             }}
           >
-            <Text variant="headlineMedium" style={{ fontWeight: "bold" }}>
-              Completed Quest Packages
-            </Text>
+            <CompletedQuestPackages questPackages={completedQuestPackages} />
           </View>
-          <View
-            style={{
-              padding: 20,
-              paddingBottom: 20,
-              backgroundColor: "inherit",
-            }}
-          >
-            <Text variant="bodyLarge">No completed quest packages</Text>
-          </View>
-        </View>
+        )}
       </View>
     </ContainerView>
   );

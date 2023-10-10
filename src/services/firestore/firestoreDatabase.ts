@@ -50,6 +50,10 @@ abstract class FirestoreDatabase<T extends { [x: string]: any }> {
     return result[0] || null;
   }
 
+  async findAllByUserId(userId: string): Promise<T[]> {
+    return this.findByField("uid", userId);
+  }
+
   async update(id: string, data: T): Promise<void> {
     await setDoc(doc(this.ref, id), data);
   }

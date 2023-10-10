@@ -10,7 +10,8 @@ export type WizardEvent =
   | { type: "CHOOSE_DURATION"; value: WizardOptionObject }
   | { type: "BACK" }
   | { type: "DONE_SELECTING_INTERESTS" }
-  | { type: "CONFIRM" };
+  | { type: "CONFIRM" }
+  | { type: "RESET" };
 
 type WizardEvents = Extract<WizardEvent, { value: WizardOptionObject }>;
 
@@ -24,18 +25,22 @@ export interface Context {
   budget?: WizardOptionObject;
 }
 
+const emptyContext: Context = {
+  interests: [],
+  category: undefined,
+  budget: undefined,
+  objective: undefined,
+  duration: undefined,
+};
+
+const clearContext = assign(emptyContext);
+
 const wizardStateMachine = createMachine<any, WizardEvent>(
   {
     predictableActionArguments: true,
     id: "questLife",
     initial: "selectCategory",
-    context: {
-      interests: [],
-      category: undefined,
-      budget: undefined,
-      objective: undefined,
-      duration: undefined,
-    },
+    context: emptyContext,
     states: {
       selectCategory: {
         on: {
@@ -97,6 +102,12 @@ const wizardStateMachine = createMachine<any, WizardEvent>(
       },
       completed: {
         type: "final",
+        on: {
+          RESET: {
+            target: "selectCategory",
+            actions: clearContext, // Reset the context on the RESET event
+          },
+        },
       },
     },
   },

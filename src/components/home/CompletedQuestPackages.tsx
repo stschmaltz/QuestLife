@@ -9,7 +9,7 @@ interface Props {
   questPackages: QuestPackage[];
 }
 
-const ActiveQuestPackages: React.FC<Props> = ({ questPackages }) => {
+const CompletedQuestPackages: React.FC<Props> = ({ questPackages }) => {
   return (
     <View
       style={{
@@ -24,7 +24,7 @@ const ActiveQuestPackages: React.FC<Props> = ({ questPackages }) => {
         }}
       >
         <Text variant="headlineMedium" style={{ fontWeight: "bold" }}>
-          Active Quest Packages
+          Completed Quest Packages
         </Text>
       </View>
       {questPackages.length === 0 ? (
@@ -35,8 +35,8 @@ const ActiveQuestPackages: React.FC<Props> = ({ questPackages }) => {
             justifyContent: "center",
           }}
         >
-          <Text>There are no active quests right now.</Text>
-          <Text>Generate some more to continue the adventure!</Text>
+          <Text>You haven't completed any quests yet!</Text>
+          <Text>Finish all of the quests in a package to see them here.</Text>
         </View>
       ) : (
         <QuestPackageCarousel questPackages={questPackages} />
@@ -45,4 +45,4 @@ const ActiveQuestPackages: React.FC<Props> = ({ questPackages }) => {
   );
 };
 
-export default ActiveQuestPackages;
+export default CompletedQuestPackages;

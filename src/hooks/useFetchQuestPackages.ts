@@ -6,11 +6,10 @@ import { QuestManager } from "../services/firestore/quests/quests";
 
 const questManager = new QuestManager();
 
-export const useRecentQuestPackages = (
+export const useFetchAllQuestPackages = (
   user: User | null | undefined,
-  count: number,
 ): [QuestPackage[], boolean, Error | null] => {
-  const [quests, setQuests] = useState<QuestPackage[]>([]);
+  const [questPackages, setQuestPackages] = useState<QuestPackage[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -22,22 +21,21 @@ export const useRecentQuestPackages = (
 
     const fetchQuests = async () => {
       try {
-        const recentQuests: QuestPackage[] = await questManager.getRecentQuests(
-          userId,
-          count,
-        );
-        setQuests(recentQuests);
+        const allQuestPackages: QuestPackage[] =
+          await questManager.getAllQuestPackages(userId);
+
+        setQuestPackages(allQuestPackages);
       } catch (err: unknown) {
         if (err instanceof Error) setError(err);
 
-        console.error("Error fetching recent quests:", err);
+        console.error("Error fetching recent questPackages:", err);
       } finally {
         setLoading(false);
       }
     };
 
     fetchQuests();
-  }, [count, user, error]);
+  }, [user, error]);
 
-  return [quests, loading, error];
+  return [questPackages, loading, error];
 };
