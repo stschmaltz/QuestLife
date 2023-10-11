@@ -17,6 +17,7 @@ import useFetchQuest from "../../../src/hooks/useFetchQuestPackage";
 import useFetchWizardOutput from "../../../src/hooks/useFetchWizardOutput";
 import { Quest } from "../../../src/services/firestore/quests/quest.types";
 import { CustomTheme } from "../../../src/theme/theme.types";
+import { getCompletedQuests } from "../../../src/utils/questHelper";
 function LoadingView() {
   return <ActivityIndicator size="large" />;
 }
@@ -61,9 +62,10 @@ export default function QuestPackagePage() {
     return <LoadingView />;
   }
 
-  const completedQuests = questPackage?.quests
-    ? questPackage.quests.filter((quest) => !!quest.completedOn)
-    : [];
+  const completedQuests =
+    questPackage?.quests && questPackage?.quests.length > 0
+      ? getCompletedQuests(questPackage)
+      : [];
 
   return (
     <ContainerView style={{ padding: 20, justifyContent: "flex-start" }}>

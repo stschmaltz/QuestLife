@@ -21,6 +21,7 @@ export default function AuthorizedLayout() {
         <Tabs
           screenOptions={{
             headerRight: () => <LogoutButton />,
+
             tabBarStyle: {
               justifyContent: "space-around",
               alignItems: "center",

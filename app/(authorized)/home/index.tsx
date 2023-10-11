@@ -13,8 +13,11 @@ import { CustomTheme } from "../../../src/theme/theme.types";
 export default function Home() {
   const { user, loadingUser } = useAuth();
 
-  const [allQuestPackages, questPackagesLoading, fetchAllQuestPackagesError] =
-    useFetchAllQuestPackages(user);
+  const [
+    allQuestPackages = [],
+    questPackagesLoading,
+    fetchAllQuestPackagesError,
+  ] = useFetchAllQuestPackages(user);
 
   const { colors } = useTheme<CustomTheme>();
   if (!user || loadingUser) {
@@ -48,40 +51,38 @@ export default function Home() {
 
       <View style={{ width: "100%" }}>
         {fetchAllQuestPackagesError && <Text>Error loading quests</Text>}
-        {questPackagesLoading ? (
-          <ActivityIndicator size="large" animating={questPackagesLoading} />
-        ) : (
-          <View
-            style={{
-              width: "100%",
-              borderTopWidth: 1,
-              borderBottomWidth: 1,
-              backgroundColor: colors.primaryContainer,
-              minHeight: 200,
-            }}
-          >
-            <ActiveQuestPackages questPackages={activeQuestPackages} />
-          </View>
-        )}
+
+        <View
+          style={{
+            width: "100%",
+            borderTopWidth: 1,
+            borderBottomWidth: 1,
+            backgroundColor: colors.primaryContainer,
+            minHeight: 200,
+          }}
+        >
+          <ActiveQuestPackages
+            questPackages={activeQuestPackages}
+            isLoading={questPackagesLoading}
+          />
+        </View>
       </View>
-      <View style={{ height: 10 }} />
+      <View style={{ height: 0 }} />
       <View style={{ width: "100%" }}>
         {fetchAllQuestPackagesError && <Text>Error loading quests</Text>}
-        {questPackagesLoading ? (
-          <ActivityIndicator size="large" animating={questPackagesLoading} />
-        ) : (
-          <View
-            style={{
-              width: "100%",
-              borderTopWidth: 1,
-              borderBottomWidth: 1,
-              backgroundColor: colors.tertiaryContainer,
-              minHeight: 200,
-            }}
-          >
-            <CompletedQuestPackages questPackages={completedQuestPackages} />
-          </View>
-        )}
+        <View
+          style={{
+            width: "100%",
+            borderTopWidth: 1,
+            borderBottomWidth: 1,
+            backgroundColor: colors.tertiaryContainer,
+          }}
+        >
+          <CompletedQuestPackages
+            questPackages={completedQuestPackages}
+            isLoading={questPackagesLoading}
+          />
+        </View>
       </View>
     </ContainerView>
   );

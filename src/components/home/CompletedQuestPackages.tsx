@@ -1,19 +1,24 @@
 import React from "react";
 import { View } from "react-native";
-import { Text } from "react-native-paper";
+import { ActivityIndicator, Text } from "react-native-paper";
 
 import QuestPackageCarousel from "./QuestPackageCarousel";
 import { QuestPackage } from "../../services/firestore/quests/quest.types";
 
 interface Props {
   questPackages: QuestPackage[];
+  isLoading: boolean;
 }
 
-const CompletedQuestPackages: React.FC<Props> = ({ questPackages }) => {
+const CompletedQuestPackages: React.FC<Props> = ({
+  questPackages,
+  isLoading,
+}) => {
   return (
     <View
       style={{
         width: "100%",
+        minHeight: 200,
       }}
     >
       <View
@@ -27,7 +32,17 @@ const CompletedQuestPackages: React.FC<Props> = ({ questPackages }) => {
           Completed Quest Packages
         </Text>
       </View>
-      {questPackages.length === 0 ? (
+      {isLoading ? (
+        <View
+          style={{
+            height: 150,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <ActivityIndicator size="large" animating={isLoading} />
+        </View>
+      ) : questPackages.length === 0 ? (
         <View
           style={{
             padding: 20,
