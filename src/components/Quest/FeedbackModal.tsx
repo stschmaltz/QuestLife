@@ -2,10 +2,10 @@ import React from "react";
 import { View } from "react-native";
 import { TextInput, useTheme } from "react-native-paper";
 
-import { UserRatingOptions } from "../../../services/firestore/quests/quest.types";
-import { CustomTheme } from "../../../theme/theme.types";
-import ThemedButton from "../../themed/ThemedButton";
-import { ThemedModal } from "../../themed/ThemedModal";
+import { UserRatingOptions } from "../../services/firestore/quests/quest.types";
+import { CustomTheme } from "../../theme/theme.types";
+import ThemedButton from "../themed/ThemedButton";
+import { ThemedModal } from "../themed/ThemedModal";
 
 interface FeedbackModalProps {
   visible: boolean;

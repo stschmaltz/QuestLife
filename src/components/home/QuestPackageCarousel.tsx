@@ -1,6 +1,6 @@
 import { useRouter } from "expo-router";
 import React from "react";
-import { ScrollView } from "react-native";
+import { ScrollView, View } from "react-native";
 import { Text } from "react-native-paper";
 
 import { QuestPackage } from "../../services/firestore/quests/quest.types";
@@ -39,21 +39,22 @@ const QuestPackageCarousel: React.FC<Props> = ({ questPackages }) => {
             }}
             onPress={() => router.push(`/quest-package/${questPackage.id}`)}
           >
-            <Text variant="bodyLarge" style={{ textAlign: "center" }}>
+            <Text variant="bodyMedium" style={{ textAlign: "center" }}>
               {questPackage.quests[0]?.challengeTitle || "No Quests"}
             </Text>
-            <Text
-              variant="bodySmall"
-              style={{ textAlign: "center", marginTop: 5 }}
+            <View
+              style={{ justifyContent: "flex-end", flex: 1, paddingTop: 10 }}
             >
-              🕒 {questPackage.quests[0]?.suggestedDuration}
-            </Text>
-            <Text
-              variant="bodySmall"
-              style={{ textAlign: "center", marginTop: 3 }}
-            >
-              ✅ {completedQuestCount}/{questPackage.quests.length}
-            </Text>
+              <Text variant="bodySmall" style={{}}>
+                🕒 {questPackage.quests[0]?.suggestedDuration}
+              </Text>
+              <Text
+                variant="bodySmall"
+                style={{ marginTop: 3, textAlign: "center" }}
+              >
+                ✅ {completedQuestCount}/{questPackage.quests.length}
+              </Text>
+            </View>
           </ThemedCard>
         );
       })}

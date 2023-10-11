@@ -4,12 +4,12 @@ import { View } from "react-native";
 import { ActivityIndicator, Text } from "react-native-paper";
 
 import ContainerView from "../../../src/components/ContainerView";
+import { FeedbackModal } from "../../../src/components/Quest/FeedbackModal";
+import QuestTitle from "../../../src/components/Quest/QuestTitle";
 import CompletedQuestView from "../../../src/components/Quest/QuestView/CompletedQuestView";
-import { FeedbackModal } from "../../../src/components/Quest/QuestView/FeedbackModal";
 import LockedQuestView from "../../../src/components/Quest/QuestView/LockedQuestView";
-import QuestTitle from "../../../src/components/Quest/QuestView/QuestTitle";
-import QuestViewFooter from "../../../src/components/Quest/QuestView/QuestViewFooter";
 import UnlockedQuestView from "../../../src/components/Quest/QuestView/UnlockedQuestView";
+import QuestViewFooter from "../../../src/components/Quest/QuestViewFooter";
 import { useAuth } from "../../../src/context/AuthProvider";
 import { useQuestPackage } from "../../../src/context/QuestPackageContext";
 import useFetchQuest from "../../../src/hooks/useFetchQuestPackage";

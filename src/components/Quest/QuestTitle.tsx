@@ -2,7 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 
-import { CustomTheme } from "../../../theme/theme.types";
+import { CustomTheme } from "../../theme/theme.types";
 
 interface Props {
   title: string;

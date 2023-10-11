@@ -4,7 +4,6 @@ import { Provider, MD3LightTheme as DefaultTheme } from "react-native-paper";
 
 import { AuthProvider } from "../src/context/AuthProvider";
 import { QuestGeneratorProvider } from "../src/context/QuestGeneratorProvider";
-import { OpenAIApi } from "../src/services/openai/gpt";
 import { colors } from "../src/theme/theme";
 
 export default function RootLayout() {

@@ -1,3 +1,4 @@
+import { useRouter } from "expo-router";
 import React, { useState, useCallback } from "react";
 import { ScrollView } from "react-native";
 import { ActivityIndicator, Card, Text } from "react-native-paper";
@@ -14,10 +15,10 @@ import { QuestManager } from "../../../src/services/firestore/quests/quests";
 import { WizardOutputManager } from "../../../src/services/firestore/wizardOutput/wizardOutput";
 
 export default function NewQuest() {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const { user, loadingUser } = useAuth();
-  const { generatedQuests, loadingQuests, generateQuests } =
-    useQuestGenerator();
+  const { loadingQuests, generateQuests } = useQuestGenerator();
 
   const questManager = new QuestManager();
   const wizardOutputManager = new WizardOutputManager();
@@ -36,6 +37,8 @@ export default function NewQuest() {
         );
 
         await generateQuests(context, wizardOutput.uid, wizardOutput.id);
+        setIsLoading(false);
+        router.push("/home");
       } catch (error: any) {
         console.error("Error handling wizard completion:", error);
 
@@ -43,32 +46,14 @@ export default function NewQuest() {
         console.error("Error Code:", error.code);
         console.error("Error Message:", error.message);
         console.error("Error Details:", error.details);
-      } finally {
         setIsLoading(false);
+      } finally {
       }
     },
     [questManager],
   );
 
-  // Render function for loading state
   const renderLoading = () => <ActivityIndicator size="large" animating />;
-
-  // Render function for generated quests
-  const renderQuests = () => (
-    <Card style={{ overflow: "scroll" }}>
-      <ScrollView>
-        {generatedQuests?.map((quest, index) => (
-          <>
-            <Card.Title title={quest.challengeTitle} key={index} />
-            <Card.Content>
-              <Text>{quest.challengeDescription}</Text>
-              <Text>{quest.suggestedDuration}</Text>
-            </Card.Content>
-          </>
-        ))}
-      </ScrollView>
-    </Card>
-  );
 
   return (
     <QuestGeneratorProvider>
