@@ -26,15 +26,9 @@ QuestLife seeks to bring a spark of adventure to the daily routine. By simply an
 
 ## Current Progress
 
-As of September 21, 2023, the app is in its early development phase:
+As of October 10, 2023, the app is in its early development phase:
 
-- **Frontend**:
-  - Designing user interface for preferences wizard.
-  - Setting up state management using XState.
-
-- **Backend**:
-  - Integration with Firebase for user data storage.
-  - Exploring integration with ChatGPT for challenge suggestions.
+Not currently available to any users. I am actively pushing for an MVP to get into "alpha" testing.
 
 ## Feedback and Suggestions
 
